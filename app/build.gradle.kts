@@ -1,20 +1,17 @@
 plugins {
     alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.dryflower.android.application)
     alias(libs.plugins.dryflower.android.application.compose)
+
 }
 
 android {
     namespace = "com.oscar0819.dryflower"
-    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.oscar0819.dryflower"
-        minSdk = 26
-        targetSdk = 35
         versionCode = 1
         versionName = "1.0"
-
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
     buildTypes {
@@ -25,13 +22,6 @@ android {
                 "proguard-rules.pro"
             )
         }
-    }
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
-    }
-    kotlinOptions {
-        jvmTarget = "11"
     }
     buildFeatures {
         compose = true

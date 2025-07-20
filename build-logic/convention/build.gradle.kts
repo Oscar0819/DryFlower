@@ -27,6 +27,10 @@ dependencies {
 
 gradlePlugin {
     plugins {
+        register("androidApplication") {
+            id = libs.plugins.dryflower.android.application.asProvider().get().pluginId
+            implementationClass = "AndroidApplicationConventionPlugin"
+        }
         register("androidApplicationCompose") {
             id = libs.plugins.dryflower.android.application.compose.get().pluginId
             implementationClass = "AndroidApplicationComposeConventionPlugin"

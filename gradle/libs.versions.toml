@@ -60,4 +60,5 @@ kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "ko
 jetbrains-kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "jetbrainsKotlinJvm" }
 
 # Plugins defined by this project
+dryflower-android-application = {id = "dryflower.android.application"}
 dryflower-android-application-compose = { id = "dryflower.android.application.compose" }

@@ -2,14 +2,13 @@ package com.oscar0819.core.network.retrofit
 
 import androidx.core.os.trace
 import com.oscar0819.core.network.ItunesNetworkDataSource
-import com.oscar0819.core.network.model.AlbumResult
+import com.oscar0819.core.network.model.NetworkAlbumResult
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
 import okhttp3.Call
 import okhttp3.MediaType.Companion.toMediaType
 import retrofit2.Retrofit
 import retrofit2.converter.kotlinx.serialization.asConverterFactory
-import retrofit2.create
 import retrofit2.http.GET
 import retrofit2.http.Query
 import javax.inject.Inject
@@ -21,7 +20,7 @@ private interface ItunesNetworkApi {
         @Query("term") searchTerm: String,
         @Query("entity") entity: String = "album",
         @Query("country") country: String = "US"
-    ): ItunesResponse<AlbumResult>
+    ): ItunesResponse<NetworkAlbumResult>
 }
 
 //private const val ITUNES_BASE_URL = BuildConfig.ITUNES_URL
@@ -49,6 +48,6 @@ internal class RetrofitItunesNetwork @Inject constructor(
             .create(ItunesNetworkApi::class.java)
     }
 
-    override suspend fun searchAlbum(searchTerm: String, entity: String, country: String): AlbumResult =
+    override suspend fun searchAlbum(searchTerm: String, entity: String, country: String): NetworkAlbumResult =
         networkApi.searchAlbum(searchTerm, entity, country).data
 }

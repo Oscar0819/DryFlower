@@ -24,3 +24,5 @@ rootProject.name = "DryFlower"
 include(":app")
 include(":core")
 include(":core:network")
+include(":core:data")
+include(":core:model")

@@ -1,9 +1,4 @@
-package com.oscar0819.core.network.model
-
-data class AlbumResult(
-    val resultCount: Int,
-    val results: List<AlbumInfo>
-)
+package com.oscar0819.core.model
 
 data class AlbumInfo(
     val amgArtistId: Int,

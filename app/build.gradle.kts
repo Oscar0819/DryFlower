@@ -2,7 +2,6 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.dryflower.android.application)
     alias(libs.plugins.dryflower.android.application.compose)
-
 }
 
 android {
@@ -16,7 +15,7 @@ android {
 
     buildTypes {
         release {
-            isMinifyEnabled = false
+            isMinifyEnabled = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"

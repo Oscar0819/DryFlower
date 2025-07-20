@@ -23,14 +23,14 @@ internal fun Project.configureApplication() {
             localeFilters += listOf("en", "ko")
         }
 
-        signingConfigs {
-            getByName("debug") {
-                storeFile = project.rootProject.file("debug.keystore")
-                storePassword = "android"
-                keyAlias = "androiddebugkey"
-                keyPassword = "android"
-            }
-        }
+//        signingConfigs {
+//            getByName("debug") {
+//                storeFile = project.rootProject.file("debug.keystore")
+//                storePassword = "android"
+//                keyAlias = "androiddebugkey"
+//                keyPassword = "android"
+//            }
+//        }
 
         buildTypes {
             debug {

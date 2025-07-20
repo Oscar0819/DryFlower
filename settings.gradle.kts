@@ -22,3 +22,5 @@ dependencyResolutionManagement {
 
 rootProject.name = "DryFlower"
 include(":app")
+include(":core")
+include(":core:network")

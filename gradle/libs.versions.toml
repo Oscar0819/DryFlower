@@ -11,6 +11,7 @@ composeBom = "2024.04.01"
 jetbrainsKotlinJvm = "2.0.0"
 androidTools = "31.11.1"
 ksp = "2.1.10-1.0.31"
+dagger = "2.57"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -27,6 +28,12 @@ androidx-compose-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-
 androidx-compose-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
 androidx-compose-material3 = { group = "androidx.compose.material3", name = "material3" }
 androidx-compose-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
+# 3rd-party
+## Dagger
+dagger = { module = "com.google.dagger:dagger", version.ref = "dagger" }
+dagger-compiler = { module = "com.google.dagger:dagger-compiler", version.ref = "dagger" }
+dagger-hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "dagger" }
+dagger-hilt-compiler = { module = "com.google.dagger:hilt-compiler", version.ref = "dagger" }
 
 # Dependencies of the included build-logic
 android-gradlePlugin = { group = "com.android.tools.build", name = "gradle", version.ref = "agp" }
@@ -65,3 +72,4 @@ dryflower-android-application = { id = "dryflower.android.application" }
 dryflower-android-application-compose = { id = "dryflower.android.application.compose" }
 dryflower-android-library = { id = "dryflower.android.library" }
 dryflower-android-library-compose = { id = "dryflower.android.library.compose" }
+dryflower-hilt = { id = "dryflower.hilt"}

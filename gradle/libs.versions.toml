@@ -64,3 +64,4 @@ jetbrains-kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "jetbrai
 dryflower-android-application = { id = "dryflower.android.application" }
 dryflower-android-application-compose = { id = "dryflower.android.application.compose" }
 dryflower-android-library = { id = "dryflower.android.library" }
+dryflower-android-library-compose = { id = "dryflower.android.library.compose" }

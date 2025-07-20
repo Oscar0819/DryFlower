@@ -22,4 +22,14 @@ dependencies {
     compileOnly(libs.compose.gradlePlugin)
     compileOnly(libs.kotlin.gradlePlugin)
     compileOnly(libs.ksp.gradlePlugin)
+
+}
+
+gradlePlugin {
+    plugins {
+        register("androidApplicationCompose") {
+            id = libs.plugins.dryflower.android.application.compose.get().pluginId
+            implementationClass = "AndroidApplicationComposeConventionPlugin"
+        }
+    }
 }

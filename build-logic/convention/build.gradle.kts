@@ -35,5 +35,9 @@ gradlePlugin {
             id = libs.plugins.dryflower.android.application.compose.get().pluginId
             implementationClass = "AndroidApplicationComposeConventionPlugin"
         }
+        register("androidLibrary") {
+            id = libs.plugins.dryflower.android.library.get().pluginId
+            implementationClass = "AndroidLibraryConventionPlugin"
+        }
     }
 }

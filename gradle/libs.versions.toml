@@ -55,10 +55,12 @@ androidX-compose-ui-test = [
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
+android-library = { id = "com.android.library", version.ref = "agp" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 jetbrains-kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "jetbrainsKotlinJvm" }
 
 # Plugins defined by this project
-dryflower-android-application = {id = "dryflower.android.application"}
+dryflower-android-application = { id = "dryflower.android.application" }
 dryflower-android-application-compose = { id = "dryflower.android.application.compose" }
+dryflower-android-library = { id = "dryflower.android.library" }

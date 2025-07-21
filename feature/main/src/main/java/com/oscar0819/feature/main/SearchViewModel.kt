@@ -1,6 +1,7 @@
 package com.oscar0819.feature.main
 
 import androidx.lifecycle.ViewModel
+import com.oscar0819.core.android.logger
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -18,5 +19,10 @@ class SearchViewModel @Inject constructor(
 
     fun updateSearchTextField(inputText: String) {
         _searchTextFieldState.value = inputText
+    }
+
+    fun search() {
+        logger("search : ${_searchTextFieldState.value}")
+
     }
 }

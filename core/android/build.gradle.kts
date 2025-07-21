@@ -1,5 +1,6 @@
 plugins {
     alias(libs.plugins.dryflower.android.library)
+    alias(libs.plugins.kotlin.serialization)
 }
 
 android {

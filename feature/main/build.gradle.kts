@@ -9,6 +9,7 @@ android {
 dependencies {
     implementation(projects.designsystem)
     implementation(projects.core.android)
+    implementation(projects.core.data)
 
     implementation(libs.androidx.activity.compose)
 

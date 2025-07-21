@@ -1,16 +1,21 @@
 package com.oscar0819.feature.main
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.oscar0819.core.android.AppCoroutineDispatchers
 import com.oscar0819.core.android.logger
+import com.oscar0819.core.data.repo.AlbumsRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class SearchViewModel @Inject constructor(
-
+    private val dispatchers: AppCoroutineDispatchers,
+    private val albumsRepository: AlbumsRepository
 ): ViewModel() {
 
     private val _searchTextFieldState = MutableStateFlow("")
@@ -21,7 +26,7 @@ class SearchViewModel @Inject constructor(
         _searchTextFieldState.value = inputText
     }
 
-    fun search() {
+    fun search() = viewModelScope.launch() {
         logger("search : ${_searchTextFieldState.value}")
 
     }

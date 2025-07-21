@@ -85,4 +85,5 @@ dryflower-android-application = { id = "dryflower.android.application" }
 dryflower-android-application-compose = { id = "dryflower.android.application.compose" }
 dryflower-android-library = { id = "dryflower.android.library" }
 dryflower-android-library-compose = { id = "dryflower.android.library.compose" }
-dryflower-hilt = { id = "dryflower.hilt"}
+dryflower-hilt = { id = "dryflower.hilt" }
+dryflower-feature = { id = "dryflower.feature" }

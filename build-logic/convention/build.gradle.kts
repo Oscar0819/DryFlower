@@ -47,5 +47,9 @@ gradlePlugin {
             id = libs.plugins.dryflower.hilt.get().pluginId
             implementationClass = "AndroidHiltConventionPlugin"
         }
+        register("androidFeature") {
+            id = libs.plugins.dryflower.feature.get().pluginId
+            implementationClass = "AndroidFeatureConventionPlugin"
+        }
     }
 }

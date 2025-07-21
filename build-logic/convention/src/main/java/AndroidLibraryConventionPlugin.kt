@@ -1,5 +1,6 @@
 import com.android.build.gradle.BasePlugin
 import com.android.build.gradle.LibraryExtension
+import com.oscar0819.convention.Const
 import com.oscar0819.convention.configureAndroid
 import com.oscar0819.convention.configureKotlin
 import org.gradle.api.Plugin
@@ -17,6 +18,7 @@ class AndroidLibraryConventionPlugin : Plugin<Project> {
 
             extensions.configure<LibraryExtension> {
                 buildFeatures.buildConfig = true
+                defaultConfig.targetSdk = Const.targetSdk
             }
 
             plugins.withType<BasePlugin>().configureEach {

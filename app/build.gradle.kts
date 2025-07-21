@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.dryflower.android.application)
     alias(libs.plugins.dryflower.android.application.compose)
+    alias(libs.plugins.dryflower.hilt)
 }
 
 android {

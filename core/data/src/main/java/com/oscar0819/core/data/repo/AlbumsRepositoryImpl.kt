@@ -12,6 +12,6 @@ internal class AlbumsRepositoryImpl @Inject constructor(
 ): AlbumsRepository {
     override fun searchAlbum(term: String): Flow<List<AlbumInfo>> =
         flow {
-        network.searchAlbum(term)
-    }
+            val albumInfo = network.searchAlbum(term)
+        }
 }

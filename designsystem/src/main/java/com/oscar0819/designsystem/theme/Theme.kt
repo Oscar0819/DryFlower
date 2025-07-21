@@ -1,4 +1,4 @@
-package com.oscar0819.dryflower.ui.theme
+package com.oscar0819.designsystem.theme
 
 import android.app.Activity
 import android.os.Build

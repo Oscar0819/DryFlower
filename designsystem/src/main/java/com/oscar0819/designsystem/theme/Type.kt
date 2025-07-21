@@ -1,4 +1,4 @@
-package com.oscar0819.dryflower.ui.theme
+package com.oscar0819.designsystem.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle

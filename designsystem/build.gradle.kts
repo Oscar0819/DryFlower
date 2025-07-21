@@ -1,15 +1,13 @@
 plugins {
-    alias(libs.plugins.dryflower.feature)
+    alias(libs.plugins.dryflower.android.library)
+    alias(libs.plugins.dryflower.android.library.compose)
 }
 
 android {
-    namespace = "com.oscar0819.feature.main"
+    namespace = "com.oscar0819.designsystem"
 }
 
 dependencies {
-    implementation(projects.designsystem)
-
-    implementation(libs.androidx.activity.compose)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

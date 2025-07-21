@@ -19,7 +19,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             DryFlowerTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-
+                    SearchScreen(innerPadding = innerPadding)
                 }
             }
         }

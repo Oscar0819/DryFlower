@@ -8,6 +8,7 @@ android {
 
 dependencies {
     implementation(projects.designsystem)
+    implementation(projects.core.android)
 
     implementation(libs.androidx.activity.compose)
 

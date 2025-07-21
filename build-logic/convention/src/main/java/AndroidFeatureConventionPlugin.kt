@@ -28,6 +28,7 @@ class AndroidFeatureConventionPlugin : Plugin<Project> {
     override fun apply(target: Project) {
         with(target) {
             apply(plugin = "dryflower.android.library")
+            apply(plugin = "dryflower.android.library.compose")
             apply(plugin = "dryflower.hilt")
 //            apply(plugin = "org.jetbrains.kotlin.plugin.serialization")
 

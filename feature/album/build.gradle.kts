@@ -1,7 +1,5 @@
 plugins {
     alias(libs.plugins.dryflower.feature)
-    alias(libs.plugins.dryflower.android.library.compose)
-
 }
 
 android {

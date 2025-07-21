@@ -1,4 +1,4 @@
-package com.oscar0819.feature.search
+package com.oscar0819.feature.main
 
 import org.junit.Test
 

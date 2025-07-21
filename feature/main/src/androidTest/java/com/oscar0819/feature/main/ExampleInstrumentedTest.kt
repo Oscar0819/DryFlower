@@ -1,4 +1,4 @@
-package com.oscar0819.feature.search
+package com.oscar0819.feature.main
 
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4

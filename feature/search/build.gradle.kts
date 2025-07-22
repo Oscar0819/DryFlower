@@ -3,7 +3,7 @@ plugins {
 }
 
 android {
-    namespace = "com.oscar0819.feature.main"
+    namespace = "com.oscar0819.feature.search"
 }
 
 dependencies {

@@ -1,6 +1,7 @@
 package com.oscar0819.core.network.retrofit
 
 import androidx.core.os.trace
+import com.oscar0819.core.network.BuildConfig
 import com.oscar0819.core.network.ItunesNetworkDataSource
 import com.oscar0819.core.network.model.NetworkAlbumResult
 import kotlinx.serialization.Serializable
@@ -23,8 +24,8 @@ private interface ItunesNetworkApi {
     ): ItunesResponse<NetworkAlbumResult>
 }
 
-//private const val ITUNES_BASE_URL = BuildConfig.ITUNES_URL
-private const val ITUNES_BASE_URL = "https://itunes.apple.com/"
+private val ITUNES_BASE_URL = BuildConfig.ITUNES_URL
+//private const val ITUNES_BASE_URL = "https://itunes.apple.com/"
 
 @Serializable
 private data class ItunesResponse<T>(

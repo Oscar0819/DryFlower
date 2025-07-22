@@ -26,8 +26,10 @@ class SearchViewModel @Inject constructor(
         _searchTextFieldState.value = inputText
     }
 
-    fun search() = viewModelScope.launch() {
-        logger("search : ${_searchTextFieldState.value}")
+    fun search() = viewModelScope.launch(dispatchers.io) {
+        val searchText = _searchTextFieldState.value
+        logger("search : ${searchText}")
 
+        albumsRepository.searchAlbum(searchText)
     }
 }

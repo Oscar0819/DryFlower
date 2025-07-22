@@ -1,3 +1,4 @@
+
 plugins {
     alias(libs.plugins.dryflower.android.library)
     alias(libs.plugins.dryflower.hilt)
@@ -10,7 +11,7 @@ android {
         buildConfigField(
             "String",
             "ITUNES_URL",
-            "https://itunes.apple.com/"
+            "\"https://itunes.apple.com/\""
         )
     }
 

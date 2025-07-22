@@ -1,5 +1,6 @@
 plugins {
     alias(libs.plugins.dryflower.android.library)
+    alias(libs.plugins.dryflower.hilt)
     alias(libs.plugins.kotlin.serialization)
 }
 
@@ -9,6 +10,7 @@ android {
 
 dependencies {
 
+    implementation(libs.kotlinx.coroutines.android)
 //    implementation(libs.androidx.core.ktx)
 //    implementation(libs.androidx.appcompat)
 //    implementation(libs.material)

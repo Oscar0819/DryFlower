@@ -30,6 +30,10 @@ class SearchViewModel @Inject constructor(
         val searchText = _searchTextFieldState.value
         logger("search : ${searchText}")
 
-        albumsRepository.searchAlbum(searchText)
+        val flow = albumsRepository.searchAlbum(searchText)
+
+        flow.collect {
+            logger("collect $it")
+        }
     }
 }

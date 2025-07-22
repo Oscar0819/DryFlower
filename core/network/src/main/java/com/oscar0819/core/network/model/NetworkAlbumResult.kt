@@ -1,12 +1,15 @@
 package com.oscar0819.core.network.model
 
 import com.oscar0819.core.model.AlbumInfo
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class NetworkAlbumResult(
     val resultCount: Int,
     val results: List<NetworkAlbumInfo>
 )
 
+@Serializable
 data class NetworkAlbumInfo(
     val amgArtistId: Int,
     val artistId: Int,

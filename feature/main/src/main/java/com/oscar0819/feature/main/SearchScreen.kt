@@ -38,7 +38,6 @@ fun SearchScreen(
         SearchTextField(
             searchInputText,
             onSearchInputTextChanged = { inputText ->
-                logger(inputText)
                 viewModel.updateSearchTextField(inputText)
             },
             onSearch = {

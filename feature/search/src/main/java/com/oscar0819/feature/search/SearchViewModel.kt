@@ -1,4 +1,4 @@
-package com.oscar0819.feature.main
+package com.oscar0819.feature.search
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

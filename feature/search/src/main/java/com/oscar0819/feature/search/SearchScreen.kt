@@ -1,4 +1,4 @@
-package com.oscar0819.feature.main
+package com.oscar0819.feature.search
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column

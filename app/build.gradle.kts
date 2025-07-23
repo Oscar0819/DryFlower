@@ -30,7 +30,9 @@ android {
 
 dependencies {
     implementation(projects.designsystem)
+    implementation(projects.core.model)
     implementation(projects.feature.search)
+    implementation(projects.feature.album)
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)

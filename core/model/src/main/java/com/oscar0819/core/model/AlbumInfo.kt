@@ -1,25 +1,28 @@
 package com.oscar0819.core.model
 
+import kotlinx.serialization.Serializable
+
+@Serializable
 data class AlbumInfo(
-    val amgArtistId: Int,
-    val artistId: Int,
-    val artistName: String,
-    val artistViewUrl: String,
-    val artworkUrl100: String,
-    val artworkUrl60: String,
-    val collectionCensoredName: String,
-    val collectionExplicitness: String,
-    val collectionId: Int,
-    val collectionName: String,
-    val collectionPrice: Double,
-    val collectionType: String,
-    val collectionViewUrl: String,
-    val contentAdvisoryRating: String,
-    val copyright: String,
-    val country: String,
-    val currency: String,
-    val primaryGenreName: String,
-    val releaseDate: String,
-    val trackCount: Int,
-    val wrapperType: String
+    val amgArtistId: Int? = null,
+    val artistId: Int? = null,
+    val artistName: String? = null,
+    val artistViewUrl: String? = null,
+    val artworkUrl100: String? = null,
+    val artworkUrl60: String? = null,
+    val collectionCensoredName: String? = null,
+    val collectionExplicitness: String? = null,
+    val collectionId: Int? = null,
+    val collectionName: String? = null,
+    val collectionPrice: Double? = null,
+    val collectionType: String? = null,
+    val collectionViewUrl: String? = null,
+    val contentAdvisoryRating: String? = null,
+    val copyright: String? = null,
+    val country: String? = null,
+    val currency: String? = null,
+    val primaryGenreName: String? = null,
+    val releaseDate: String? = null,
+    val trackCount: Int? = null,
+    val wrapperType: String? = null
 )

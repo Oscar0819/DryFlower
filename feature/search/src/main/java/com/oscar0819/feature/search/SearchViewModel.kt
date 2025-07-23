@@ -15,37 +15,13 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class SearchViewModel @Inject constructor(
-    private val dispatchers: AppCoroutineDispatchers,
-    private val albumsRepository: AlbumsRepository
-): ViewModel() {
+class SearchViewModel @Inject constructor(): ViewModel() {
 
-    private val _searchTextFieldState = MutableStateFlow("")
+    private val _searchTextFieldState = MutableStateFlow("yuuri")
     val searchTextFieldState: StateFlow<String>
         get() = _searchTextFieldState.asStateFlow()
 
-    private val _searchResults = MutableStateFlow<List<AlbumInfo>>(emptyList())
-    val searchResults: StateFlow<List<AlbumInfo>>
-        get() = _searchResults.asStateFlow()
-
     fun updateSearchTextField(inputText: String) {
         _searchTextFieldState.value = inputText
-    }
-
-    fun search(onSearchComplete: () -> Unit) = viewModelScope.launch(dispatchers.io) {
-        try {
-            val searchText = _searchTextFieldState.value
-            logger("search : $searchText")
-
-            val results = albumsRepository.searchAlbum(searchText).first()
-            launch(dispatchers.main) {
-                _searchResults.value = results
-                onSearchComplete()
-            }
-        } catch (e: Exception) {
-            e.printStackTrace()
-        } finally {
-            // loading = false
-        }
     }
 }

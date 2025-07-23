@@ -19,10 +19,21 @@ internal class AlbumsRepositoryImpl @Inject constructor(
             val albumInfo = network.searchAlbum(term)
             logger(albumInfo)
 
-            val result = albumInfo.results.map {
-                it.asExternalModel()
+            val result: List<AlbumInfo> = albumInfo.results.map {
+                val externalModel = it.asExternalModel()
+                changeUrl(externalModel)
             }
 
             emit(result)
         }.flowOn(dispatchers.io)
+
+    fun changeUrl(albumInfo: AlbumInfo): AlbumInfo {
+        val artworkUrl1200 = albumInfo.artworkUrl100?.replace(RESOLUTION_100, RESOLUTION_1200)
+        return albumInfo.copy(artworkUrl1200 = artworkUrl1200)
+    }
+
+    companion object {
+        const val RESOLUTION_100 = "100x100"
+        const val RESOLUTION_1200 = "1200x1200"
+    }
 }

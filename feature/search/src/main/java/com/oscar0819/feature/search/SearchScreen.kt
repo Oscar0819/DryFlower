@@ -20,7 +20,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 fun SearchScreen(
     modifier: Modifier = Modifier,
     viewModel: SearchViewModel = hiltViewModel(),
-    onNavigateToAlbums: () -> Unit,
+    onNavigateToAlbums: (String) -> Unit,
 ) {
     val searchInputText by viewModel.searchTextFieldState.collectAsStateWithLifecycle()
 
@@ -37,7 +37,7 @@ fun SearchScreen(
                 viewModel.updateSearchTextField(inputText)
             },
             onSearch = {
-                viewModel.search({ onNavigateToAlbums() })
+                onNavigateToAlbums(searchInputText)
             }
         )
     }

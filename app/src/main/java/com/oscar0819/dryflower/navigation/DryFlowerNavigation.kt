@@ -9,8 +9,8 @@ import com.oscar0819.feature.search.SearchScreen
 fun NavGraphBuilder.dryflowerNavigation(navHostController: NavHostController) {
     composable<DryFlowerScreen.Search> {
         SearchScreen(
-            onNavigateToAlbums = {
-                navHostController.navigate(DryFlowerScreen.Album)
+            onNavigateToAlbums = { term ->
+                navHostController.navigate(DryFlowerScreen.Album(term))
             }
         )
     }

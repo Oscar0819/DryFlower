@@ -8,6 +8,7 @@ data class AlbumInfo(
     val artistId: Int? = null,
     val artistName: String? = null,
     val artistViewUrl: String? = null,
+    val artworkUrl1200: String? = null, // 추가
     val artworkUrl100: String? = null,
     val artworkUrl60: String? = null,
     val collectionCensoredName: String? = null,

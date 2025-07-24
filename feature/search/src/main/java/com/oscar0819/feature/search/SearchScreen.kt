@@ -18,6 +18,8 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import java.net.URLEncoder
+import java.nio.charset.StandardCharsets
 
 @Composable
 fun SearchScreen(
@@ -41,7 +43,8 @@ fun SearchScreen(
                 viewModel.updateSearchTextField(inputText)
             },
             onSearch = {
-                onNavigateToAlbums(searchInputText)
+                val encodedTerm = searchInputText.replace(" ", "+")
+                onNavigateToAlbums(encodedTerm)
             }
         )
     }

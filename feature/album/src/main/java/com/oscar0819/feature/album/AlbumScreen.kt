@@ -41,7 +41,10 @@ fun AlbumScreen(
     val uiState by albumViewModel.uiState.collectAsStateWithLifecycle()
     val albumInfoList by albumViewModel.albumInfoList.collectAsStateWithLifecycle()
 
-    Column(modifier = Modifier.fillMaxSize().background(MaterialTheme.colorScheme.background)) {
+    Column(
+        modifier = Modifier.fillMaxSize()
+            .background(MaterialTheme.colorScheme.background)
+    ) {
         DryFlowerAppBar(
             stringResource(R.string.screen_name)
         )

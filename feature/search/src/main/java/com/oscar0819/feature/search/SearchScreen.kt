@@ -11,6 +11,7 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -36,21 +37,28 @@ fun SearchScreen(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text("Dry Flower")
-        SearchTextField(
-            searchInputText,
-            onSearchInputTextChanged = { inputText ->
-                viewModel.updateSearchTextField(inputText)
-            },
-            onSearch = {
-                val encodedTerm = searchInputText.replace(" ", "+")
-                onNavigateToAlbums(encodedTerm)
-            }
-        )
+        SearchContent(searchInputText, viewModel, onNavigateToAlbums)
     }
 }
 
-
+@Composable
+fun SearchContent(
+    searchInputText: String,
+    viewModel: SearchViewModel,
+    onNavigateToAlbums: (String) -> Unit,
+) {
+    Text("Dry Flower")
+    SearchTextField(
+        searchInputText,
+        onSearchInputTextChanged = { inputText ->
+            viewModel.updateSearchTextField(inputText)
+        },
+        onSearch = {
+            val encodedTerm = searchInputText.replace(" ", "+")
+            onNavigateToAlbums(encodedTerm)
+        }
+    )
+}
 
 @Composable
 fun SearchTextField(

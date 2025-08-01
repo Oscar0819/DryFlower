@@ -33,6 +33,7 @@ dependencies {
     implementation(projects.core.model)
     implementation(projects.feature.search)
     implementation(projects.feature.album)
+    implementation(projects.feature.artist)
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)

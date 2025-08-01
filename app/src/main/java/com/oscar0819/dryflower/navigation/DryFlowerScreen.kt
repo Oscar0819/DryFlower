@@ -9,4 +9,7 @@ sealed interface DryFlowerScreen {
 
     @Serializable
     data class Album(val term: String): DryFlowerScreen
+
+    @Serializable
+    data class Artist(val term: String): DryFlowerScreen
 }

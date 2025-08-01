@@ -21,7 +21,29 @@ class SearchViewModel @Inject constructor(): ViewModel() {
     val searchTextFieldState: StateFlow<String>
         get() = _searchTextFieldState.asStateFlow()
 
+    private val _searchTypeState = MutableStateFlow<SearchType?>(null)
+    val searchTypeState: StateFlow<SearchType?>
+        get() = _searchTypeState.asStateFlow()
+
+    val searchTypeOptions = listOf(
+        SearchType(id = 1, "Artist"),
+        SearchType(id = 2, "Album")
+    )
+
+    init {
+        _searchTypeState.value = searchTypeOptions[0]
+    }
+
     fun updateSearchTextField(inputText: String) {
         _searchTextFieldState.value = inputText
     }
+
+    fun updateSearchType(searchType: SearchType) {
+        _searchTypeState.value = searchType
+    }
 }
+
+data class SearchType(
+    val id: Int,
+    val name: String
+)

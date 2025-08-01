@@ -3,32 +3,33 @@ package com.oscar0819.feature.search
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Surface
+import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import java.net.URLEncoder
-import java.nio.charset.StandardCharsets
 
 @Composable
 fun SearchScreen(
     modifier: Modifier = Modifier,
     viewModel: SearchViewModel = hiltViewModel(),
-    onNavigateToAlbums: (String) -> Unit,
+    onNavigateToNextScreen: (String, SearchType?) -> Unit,
 ) {
     val searchInputText by viewModel.searchTextFieldState.collectAsStateWithLifecycle()
+    val searchType by viewModel.searchTypeState.collectAsStateWithLifecycle()
 
     Column(
         modifier = modifier
@@ -37,17 +38,19 @@ fun SearchScreen(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        SearchContent(searchInputText, viewModel, onNavigateToAlbums)
+        SearchContent(searchInputText, searchType, viewModel, onNavigateToNextScreen)
     }
 }
 
 @Composable
 fun SearchContent(
     searchInputText: String,
+    searchType: SearchType?,
     viewModel: SearchViewModel,
-    onNavigateToAlbums: (String) -> Unit,
+    onNavigateToNextScreen: (String, SearchType?) -> Unit,
 ) {
     Text("Dry Flower")
+    RadioButtonGroup(searchType, viewModel)
     SearchTextField(
         searchInputText,
         onSearchInputTextChanged = { inputText ->
@@ -55,9 +58,29 @@ fun SearchContent(
         },
         onSearch = {
             val encodedTerm = searchInputText.replace(" ", "+")
-            onNavigateToAlbums(encodedTerm)
+            onNavigateToNextScreen(encodedTerm, searchType)
         }
     )
+}
+
+@Composable
+fun RadioButtonGroup(
+    searchType: SearchType?,
+    viewModel: SearchViewModel,
+) {
+
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = Modifier.padding(4.dp)
+    ) {
+        viewModel.searchTypeOptions.forEach { option ->
+            RadioButton(
+                selected = (searchType == option),
+                onClick = { viewModel.updateSearchType(option) }
+            )
+            Text(option.name)
+        }
+    }
 }
 
 @Composable
@@ -84,5 +107,7 @@ fun SearchTextField(
 @Preview
 @Composable
 private fun SearchScreenPreview() {
-    SearchScreen(onNavigateToAlbums = {})
+    SearchScreen(onNavigateToNextScreen = { a, b ->
+
+    })
 }

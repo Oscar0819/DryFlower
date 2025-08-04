@@ -49,6 +49,7 @@ fun AlbumScreen(
             stringResource(R.string.screen_name)
         )
         AlbumContent(
+            albumViewModel,
             uiState,
             albumInfoList
         )
@@ -57,6 +58,7 @@ fun AlbumScreen(
 
 @Composable
 private fun AlbumContent(
+    albumViewModel: AlbumViewModel,
     uiState: AlbumUiState,
     albumInfoList: List<AlbumInfo>
 ) {
@@ -68,10 +70,13 @@ private fun AlbumContent(
             itemsIndexed(albumInfoList) { index, albumInfo ->
                 AlbumCard(albumInfo)
             }
+            albumViewModel.updateUiState(AlbumUiState.Idle)
         }
 
         if (uiState == AlbumUiState.Loading) {
             DryFlowerCircularProgress()
+        } else if (uiState == AlbumUiState.Idle) {
+            albumViewModel.uiState
         }
     }
 }

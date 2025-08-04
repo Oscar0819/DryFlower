@@ -31,6 +31,7 @@ fun ArtistScreen(
 @Composable
 fun ArtistContent() {
     Text("Yuuri")
+
 }
 
 @Preview

@@ -21,7 +21,9 @@ class AlbumViewModel @Inject constructor(
     private val albumsRepository: AlbumsRepository,
     savedStateHandle: SavedStateHandle
 ): ViewModel() {
-    internal val uiState: StateFlow<AlbumUiState> = MutableStateFlow(AlbumUiState.Loading)
+    private val _uiState = MutableStateFlow<AlbumUiState>(AlbumUiState.Loading)
+    val uiState: StateFlow<AlbumUiState>
+        get() = _uiState
 
     private val term = savedStateHandle.getStateFlow<String?>("term", null)
     val albumInfoList: StateFlow<List<AlbumInfo>> =
@@ -33,10 +35,13 @@ class AlbumViewModel @Inject constructor(
             initialValue = emptyList(),
         )
 
+    fun updateUiState(albumUiState: AlbumUiState) {
+        _uiState.value = albumUiState
+    }
+
 }
 
-internal sealed interface AlbumUiState {
-
+sealed interface AlbumUiState {
     data object Idle : AlbumUiState
 
     data object Loading : AlbumUiState

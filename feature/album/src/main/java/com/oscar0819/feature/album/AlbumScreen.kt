@@ -75,8 +75,6 @@ private fun AlbumContent(
 
         if (uiState == AlbumUiState.Loading) {
             DryFlowerCircularProgress()
-        } else if (uiState == AlbumUiState.Idle) {
-            albumViewModel.uiState
         }
     }
 }

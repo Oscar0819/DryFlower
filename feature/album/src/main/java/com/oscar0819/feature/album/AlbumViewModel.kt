@@ -8,11 +8,18 @@ import com.oscar0819.core.android.logger
 import com.oscar0819.core.data.repo.AlbumsRepository
 import com.oscar0819.core.model.AlbumInfo
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.flow.last
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import javax.inject.Inject
 
@@ -22,34 +29,27 @@ class AlbumViewModel @Inject constructor(
     private val albumsRepository: AlbumsRepository,
     savedStateHandle: SavedStateHandle
 ): ViewModel() {
-    private val _uiState = MutableStateFlow<AlbumUiState>(AlbumUiState.Loading)
-    val uiState: StateFlow<AlbumUiState>
-        get() = _uiState
-
     private val term = savedStateHandle.getStateFlow<String?>("term", null)
-    val albumInfoList: StateFlow<List<AlbumInfo>> =
-        term.filterNotNull().flatMapLatest { term ->
-            albumsRepository.searchAlbum(
-                term,
-                onComplete = {
-                    _uiState.value = AlbumUiState.Idle
-                },
-                onError = {
-                    _uiState.value = AlbumUiState.Error(null)
-                }
-            )
-        }.stateIn(
-            scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(5_000),
-            initialValue = emptyList(),
-        )
+
+    val uiState: StateFlow<AlbumUiState> = term.filterNotNull().flatMapLatest { term ->
+        flow {
+            try {
+                val albums = albumsRepository.searchAlbum(term).first()
+                emit(AlbumUiState.Success(albums))
+            } catch (e: Exception) {
+                emit(AlbumUiState.Error)
+            }
+        }
+    }.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5_000),
+        initialValue = AlbumUiState.Loading,
+    )
 
 }
 
 sealed interface AlbumUiState {
-    data object Idle : AlbumUiState
-
+    data class Success(val albumInfoList: List<AlbumInfo>) : AlbumUiState
+    data object Error : AlbumUiState
     data object Loading : AlbumUiState
-
-    data class Error(val message: String?) : AlbumUiState
 }

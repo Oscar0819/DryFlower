@@ -16,29 +16,21 @@ internal class AlbumsRepositoryImpl @Inject constructor(
     private val network: ItunesNetworkDataSource
 ): AlbumsRepository {
     override fun searchAlbum(
-        term: String,
-        onComplete: () -> Unit,
-        onError: () -> Unit
+        term: String
     ): Flow<List<AlbumInfo>> =
         flow {
-            try {
-                val albumInfo = network.searchAlbum(term)
-                logger(albumInfo)
+            val albumInfo = network.searchAlbum(term)
+            logger(albumInfo)
 
-                val result: List<AlbumInfo> = albumInfo.results.map {
-                    val externalModel = it.asExternalModel()
-                    changeUrl(externalModel)
-                }
-//                throw Exception("test")
-
-                emit(result)
-            } catch (e: Exception) {
-                e.printStackTrace()
-                onError()
+            val result: List<AlbumInfo> = albumInfo.results.map {
+                val externalModel = it.asExternalModel()
+                changeUrl(externalModel)
             }
-        }
-            .onCompletion { onComplete() }
-            .flowOn(dispatchers.io)
+
+            throw Exception("test")
+
+            emit(result)
+        }.flowOn(dispatchers.io)
 
     fun changeUrl(albumInfo: AlbumInfo): AlbumInfo {
         val artworkUrl1200 = albumInfo.artworkUrl100?.replace(RESOLUTION_100, RESOLUTION_1200)

@@ -6,5 +6,9 @@ import kotlinx.coroutines.flow.Flow
 
 interface AlbumsRepository {
     @WorkerThread
-    fun searchAlbum(term: String): Flow<List<AlbumInfo>>
+    fun searchAlbum(
+        term: String,
+        onComplete: () -> Unit,
+        onError: () -> Unit,
+        ): Flow<List<AlbumInfo>>
 }

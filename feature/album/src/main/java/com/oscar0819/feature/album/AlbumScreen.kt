@@ -68,9 +68,9 @@ private fun AlbumContent(
             contentPadding = PaddingValues(6.dp),
         ) {
             itemsIndexed(albumInfoList) { index, albumInfo ->
+                // 스크롤에 따라 새로운 아이템을 그리기 위해 이 블록이 재실행됨.
                 AlbumCard(albumInfo)
             }
-            albumViewModel.updateUiState(AlbumUiState.Idle)
         }
 
         if (uiState == AlbumUiState.Loading) {

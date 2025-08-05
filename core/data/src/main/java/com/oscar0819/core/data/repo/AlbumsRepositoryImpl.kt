@@ -8,13 +8,18 @@ import com.oscar0819.core.network.model.asExternalModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.onCompletion
 import javax.inject.Inject
 
 internal class AlbumsRepositoryImpl @Inject constructor(
     private val dispatchers: AppCoroutineDispatchers,
     private val network: ItunesNetworkDataSource
 ): AlbumsRepository {
-    override fun searchAlbum(term: String): Flow<List<AlbumInfo>> =
+    override fun searchAlbum(
+        term: String,
+        onComplete: () -> Unit,
+        onError: () -> Unit
+    ): Flow<List<AlbumInfo>> =
         flow {
             val albumInfo = network.searchAlbum(term)
             logger(albumInfo)
@@ -25,7 +30,9 @@ internal class AlbumsRepositoryImpl @Inject constructor(
             }
 
             emit(result)
-        }.flowOn(dispatchers.io)
+        }
+            .onCompletion { onComplete() }
+            .flowOn(dispatchers.io)
 
     fun changeUrl(albumInfo: AlbumInfo): AlbumInfo {
         val artworkUrl1200 = albumInfo.artworkUrl100?.replace(RESOLUTION_100, RESOLUTION_1200)

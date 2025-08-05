@@ -4,6 +4,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.oscar0819.core.android.AppCoroutineDispatchers
+import com.oscar0819.core.android.logger
 import com.oscar0819.core.data.repo.AlbumsRepository
 import com.oscar0819.core.model.AlbumInfo
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -28,16 +29,20 @@ class AlbumViewModel @Inject constructor(
     private val term = savedStateHandle.getStateFlow<String?>("term", null)
     val albumInfoList: StateFlow<List<AlbumInfo>> =
         term.filterNotNull().flatMapLatest { term ->
-            albumsRepository.searchAlbum(term)
+            albumsRepository.searchAlbum(
+                term,
+                onComplete = {
+                    _uiState.value = AlbumUiState.Idle
+                },
+                onError = {
+                    logger("onError")
+                }
+            )
         }.stateIn(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(5_000),
             initialValue = emptyList(),
         )
-
-    fun updateUiState(albumUiState: AlbumUiState) {
-        _uiState.value = albumUiState
-    }
 
 }
 

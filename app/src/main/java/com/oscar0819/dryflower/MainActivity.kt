@@ -6,6 +6,10 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarDuration
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -23,19 +27,31 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
+            val navController = rememberNavController()
+            val snackbarHostState = remember { SnackbarHostState() }
+
             DryFlowerTheme {
-                val navController = rememberNavController()
-
-                NavHost(
-                    navController = navController,
-                    startDestination = DryFlowerScreen.Search
+                Scaffold(
+                    snackbarHost = {
+                        SnackbarHost(hostState = snackbarHostState)
+                    }
                 ) {
-                    dryflowerNavigation(navController)
+                    NavHost(
+                        navController = navController,
+                        startDestination = DryFlowerScreen.Search
+                    ) {
+                        dryflowerNavigation(
+                            navController,
+                            onShowSnackbar = { message, action ->
+                                snackbarHostState.showSnackbar(
+                                    message = message,
+                                    actionLabel = action,
+                                    duration = SnackbarDuration.Short
+                                )
+                            }
+                        )
+                    }
                 }
-
-//                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-//
-//                }
             }
         }
     }

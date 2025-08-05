@@ -14,8 +14,10 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -33,6 +35,7 @@ import com.oscar0819.designsystem.component.DryFlowerCircularProgress
 
 @Composable
 fun AlbumScreen(
+    onShowSnackbar: suspend (String, String?) -> Unit,
     albumViewModel: AlbumViewModel = hiltViewModel()
 ) {
     val uiState by albumViewModel.uiState.collectAsStateWithLifecycle()
@@ -45,16 +48,20 @@ fun AlbumScreen(
             stringResource(R.string.screen_name)
         )
         AlbumContent(
-            uiState
+            onShowSnackbar,
+            uiState,
         )
     }
 }
 
 @Composable
 private fun AlbumContent(
+    onShowSnackbar: suspend (String, String?) -> Unit,
     uiState: AlbumUiState,
 ) {
-    Box(modifier = Modifier.fillMaxSize()) {
+    Box(
+        modifier = Modifier.fillMaxSize(),
+    ) {
         when (uiState) {
             is AlbumUiState.Success -> {
                 LazyVerticalGrid(
@@ -71,8 +78,12 @@ private fun AlbumContent(
                 DryFlowerCircularProgress()
             }
             AlbumUiState.Error -> {
+                val errorMessage = stringResource(R.string.network_error)
                 Text(modifier = Modifier.align(Alignment.Center),
-                    text = "Occurred Network Error")
+                    text = errorMessage)
+                LaunchedEffect(Unit) {
+                    onShowSnackbar(errorMessage, null)
+                }
             }
         }
     }
@@ -105,5 +116,9 @@ private fun AlbumCard(
 @Preview
 @Composable
 fun AlbumScreenPreview() {
-    AlbumScreen()
+    AlbumScreen(
+        onShowSnackbar = { message, action ->
+
+        }
+    )
 }

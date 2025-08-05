@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="screen_name">Album</string>
+
+    <string name="network_error">Network Error</string>
 </resources>

@@ -35,7 +35,7 @@ class AlbumViewModel @Inject constructor(
                     _uiState.value = AlbumUiState.Idle
                 },
                 onError = {
-                    logger("onError")
+                    _uiState.value = AlbumUiState.Error(null)
                 }
             )
         }.stateIn(

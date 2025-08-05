@@ -21,15 +21,21 @@ internal class AlbumsRepositoryImpl @Inject constructor(
         onError: () -> Unit
     ): Flow<List<AlbumInfo>> =
         flow {
-            val albumInfo = network.searchAlbum(term)
-            logger(albumInfo)
+            try {
+                val albumInfo = network.searchAlbum(term)
+                logger(albumInfo)
 
-            val result: List<AlbumInfo> = albumInfo.results.map {
-                val externalModel = it.asExternalModel()
-                changeUrl(externalModel)
+                val result: List<AlbumInfo> = albumInfo.results.map {
+                    val externalModel = it.asExternalModel()
+                    changeUrl(externalModel)
+                }
+//                throw Exception("test")
+
+                emit(result)
+            } catch (e: Exception) {
+                e.printStackTrace()
+                onError()
             }
-
-            emit(result)
         }
             .onCompletion { onComplete() }
             .flowOn(dispatchers.io)

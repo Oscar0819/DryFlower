@@ -73,9 +73,21 @@ private fun AlbumContent(
             }
         }
 
-        if (uiState == AlbumUiState.Loading) {
-            DryFlowerCircularProgress()
+        when (uiState) {
+            AlbumUiState.Loading -> {
+                DryFlowerCircularProgress()
+            }
+            AlbumUiState.Error(null) -> {
+                // onError 발생 후 바로 onCompletion 발생으로 안 나타나는 것 처럼 보임.
+                Text("Occurred Network Error")
+            }
+            else -> { }
         }
+//        if (uiState == AlbumUiState.Loading) {
+//            DryFlowerCircularProgress()
+//        } else if (uiState == AlbumUiState.Error(null)) {
+//            Text("Occurred Network Error")
+//        }
     }
 }
 

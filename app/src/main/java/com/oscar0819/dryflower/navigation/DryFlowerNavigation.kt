@@ -1,11 +1,11 @@
 package com.oscar0819.dryflower.navigation
 
-import androidx.compose.material3.SnackbarHostState
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import com.oscar0819.core.artist.ArtistScreen
 import com.oscar0819.feature.album.AlbumScreen
+import com.oscar0819.feature.search.SearchDetailScreen
 import com.oscar0819.feature.search.SearchScreen
 
 fun NavGraphBuilder.dryflowerNavigation(
@@ -14,6 +14,13 @@ fun NavGraphBuilder.dryflowerNavigation(
 ) {
     composable<DryFlowerScreen.Search> {
         SearchScreen(
+            onNavigateToSearchDetail = {
+                navHostController.navigate(DryFlowerScreen.SearchDetail)
+            }
+        )
+    }
+    composable<DryFlowerScreen.SearchDetail> {
+        SearchDetailScreen(
             onNavigateToNextScreen = { term, searchType ->
                 when (searchType?.id) {
                     1 -> {
@@ -26,6 +33,7 @@ fun NavGraphBuilder.dryflowerNavigation(
             }
         )
     }
+
     composable<DryFlowerScreen.Album> {
         AlbumScreen(onShowSnackbar)
     }

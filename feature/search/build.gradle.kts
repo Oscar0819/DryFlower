@@ -7,8 +7,6 @@ android {
 }
 
 dependencies {
-    implementation(projects.core.data)
-
     implementation(libs.androidx.activity.compose)
 
     testImplementation(libs.junit)

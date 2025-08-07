@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.dryflower.android.library)
     alias(libs.plugins.dryflower.android.library.compose)
+    alias(libs.plugins.dryflower.hilt)
 }
 
 android {
@@ -8,6 +9,8 @@ android {
 }
 
 dependencies {
+    implementation(libs.androidx.activity.compose)
+    implementation(libs.androidx.lifecycle.runtimeCompose)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

@@ -8,6 +8,9 @@ sealed interface DryFlowerScreen {
     data object Search: DryFlowerScreen
 
     @Serializable
+    data object SearchDetail: DryFlowerScreen
+
+    @Serializable
     data class Album(val term: String): DryFlowerScreen
 
     @Serializable

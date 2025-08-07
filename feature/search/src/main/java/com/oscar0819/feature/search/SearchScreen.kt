@@ -8,12 +8,18 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExposedDropdownMenuBox
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.ImeAction
@@ -51,7 +57,7 @@ fun SearchContent(
 ) {
     Text("Dry Flower")
     RadioButtonGroup(searchType, viewModel)
-    SearchTextField(
+    DropdownMenuSearchTextField(
         searchInputText,
         onSearchInputTextChanged = { inputText ->
             viewModel.updateSearchTextField(inputText)
@@ -83,12 +89,53 @@ fun RadioButtonGroup(
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SearchTextField(
+fun DropdownMenuSearchTextField(
     searchInputText: String,
     onSearchInputTextChanged: (String) -> Unit,
     onSearch: () -> Unit
 ) {
+    val items = listOf("1,", "2", "3")
+    var expanded by remember { mutableStateOf(false) }
+    var selectedText by remember { mutableStateOf(items[0]) }
+
+    ExposedDropdownMenuBox(
+        expanded = expanded,
+        onExpandedChange = { expanded = !expanded }
+    ) {
+        SearchTextField(
+            searchInputText,
+            onSearchInputTextChanged,
+            onSearch,
+            Modifier.menuAnchor()
+        )
+
+        ExposedDropdownMenu(
+            expanded = expanded,
+            onDismissRequest = { expanded = false }
+        ) {
+            items.forEach { item ->
+                DropdownMenuItem(
+                    text = { Text(item) },
+                    onClick = {
+                        selectedText = item
+                        expanded = false
+                    }
+                )
+            }
+        }
+    }
+}
+
+@Composable
+fun SearchTextField(
+    searchInputText: String,
+    onSearchInputTextChanged: (String) -> Unit,
+    onSearch: () -> Unit,
+    modifier: Modifier
+) {
+
     OutlinedTextField(
         value = searchInputText,
         onValueChange = { inputText ->
@@ -100,7 +147,8 @@ fun SearchTextField(
         keyboardActions = KeyboardActions(
             onSearch = { onSearch() }
         ),
-        label = { Text("search") }
+        label = { Text("search") },
+        modifier = modifier
     )
 }
 

@@ -27,8 +27,6 @@ internal class AlbumsRepositoryImpl @Inject constructor(
                 changeUrl(externalModel)
             }
 
-            throw Exception("test")
-
             emit(result)
         }.flowOn(dispatchers.io)
 

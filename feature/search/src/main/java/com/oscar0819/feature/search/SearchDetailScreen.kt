@@ -1,5 +1,8 @@
 package com.oscar0819.feature.search
 
+import androidx.compose.animation.AnimatedVisibilityScope
+import androidx.compose.animation.ExperimentalSharedTransitionApi
+import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
@@ -17,11 +20,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 
+@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
-fun SearchDetailScreen(
+fun SharedTransitionScope.SearchDetailScreen(
     modifier: Modifier = Modifier,
     viewModel: SearchViewModel = hiltViewModel(),
     onNavigateToNextScreen: (String, SearchType?) -> Unit,
+    animationVisibilityScope: AnimatedVisibilityScope
 ) {
     val searchInputText by viewModel.searchTextFieldState.collectAsStateWithLifecycle()
 
@@ -32,28 +37,37 @@ fun SearchDetailScreen(
             .background(MaterialTheme.colorScheme.background),
     ) {
         SearchDetailContent(
-            searchInputText
+            searchInputText,
+            sharedTransitionScope = this@SearchDetailScreen,
+            animationVisibilityScope = animationVisibilityScope
         )
     }
 
 }
 
+@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 fun SearchDetailContent(
-    searchInputText: String
+    searchInputText: String,
+    sharedTransitionScope: SharedTransitionScope,
+    animationVisibilityScope: AnimatedVisibilityScope
 ) {
-    OutlinedTextField(
-        value = searchInputText,
-        onValueChange = { },
-        label = { Text("search") },
-
-    )
+    with(sharedTransitionScope) {
+        OutlinedTextField(
+            value = searchInputText,
+            onValueChange = { },
+            label = { Text("search") },
+            modifier = Modifier
+                .sharedElement(
+                    rememberSharedContentState(key = "search"),
+                    animatedVisibilityScope = animationVisibilityScope
+                ),
+        )
+    }
 }
 
 @Preview
 @Composable
 fun SearchDetailPreview() {
-    SearchDetailScreen(onNavigateToNextScreen = { a, b ->
-
-    })
+//    SearchDetailScreen(onNavigateToNextScreen = {},)
 }

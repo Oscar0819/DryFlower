@@ -1,5 +1,8 @@
 package com.oscar0819.feature.search
 
+import androidx.compose.animation.AnimatedVisibilityScope
+import androidx.compose.animation.ExperimentalSharedTransitionApi
+import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -23,11 +26,13 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 
+@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
-fun SearchScreen(
+fun SharedTransitionScope.SearchScreen(
     modifier: Modifier = Modifier,
     viewModel: SearchViewModel = hiltViewModel(),
     onNavigateToSearchDetail: () -> Unit,
+    animationVisibilityScope: AnimatedVisibilityScope
 ) {
     val searchInputText by viewModel.searchTextFieldState.collectAsStateWithLifecycle()
     val searchType by viewModel.searchTypeState.collectAsStateWithLifecycle()
@@ -40,16 +45,26 @@ fun SearchScreen(
         verticalArrangement = Arrangement.Top,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        SearchContent(searchInputText, searchType, viewModel, onNavigateToSearchDetail)
+        SearchContent(
+            searchInputText,
+            searchType,
+            viewModel,
+            onNavigateToSearchDetail,
+            this@SearchScreen,
+            animationVisibilityScope
+        )
     }
 }
 
+@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 fun SearchContent(
     searchInputText: String,
     searchType: SearchType?,
     viewModel: SearchViewModel,
     onNavigateToSearchDetail: () -> Unit,
+    sharedTransitionScope: SharedTransitionScope,
+    animationVisibilityScope: AnimatedVisibilityScope
 ) {
     Text("Dry Flower")
     RadioButtonGroup(searchType, viewModel)
@@ -57,7 +72,9 @@ fun SearchContent(
         searchInputText,
         onNavigateToSearchDetail = {
             onNavigateToSearchDetail()
-        }
+        },
+        sharedTransitionScope,
+        animationVisibilityScope
     )
 }
 
@@ -81,26 +98,36 @@ fun RadioButtonGroup(
     }
 }
 
+@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 fun SearchTextField(
     searchInputText: String,
     onNavigateToSearchDetail: () -> Unit,
+    sharedTransitionScope: SharedTransitionScope,
+    animationVisibilityScope: AnimatedVisibilityScope
 ) {
-    OutlinedTextField(
-        value = searchInputText,
-        onValueChange = { },
-        label = { Text("search") },
-        readOnly = true,
-        modifier = Modifier.onFocusChanged { focusState ->
-            if (focusState.isFocused) {
-                onNavigateToSearchDetail()
-            }
-        }
-    )
+    with(sharedTransitionScope) {
+        OutlinedTextField(
+            value = searchInputText,
+            onValueChange = { },
+            label = { Text("search") },
+            readOnly = true,
+            modifier = Modifier
+                .sharedElement(
+                    rememberSharedContentState(key = "search"),
+                    animatedVisibilityScope = animationVisibilityScope
+                )
+                .onFocusChanged { focusState ->
+                    if (focusState.isFocused) {
+                        onNavigateToSearchDetail()
+                    }
+                }
+        )
+    }
 }
 
 @Preview
 @Composable
 private fun SearchScreenPreview() {
-    SearchScreen(onNavigateToSearchDetail = { })
+//    SearchScreen(onNavigateToSearchDetail = { })
 }

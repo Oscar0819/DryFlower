@@ -1,8 +1,12 @@
 package com.oscar0819.feature.search
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.AnimatedVisibilityScope
 import androidx.compose.animation.ExperimentalSharedTransitionApi
+import androidx.compose.animation.SharedTransitionLayout
 import androidx.compose.animation.SharedTransitionScope
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -126,8 +130,28 @@ fun SearchTextField(
     }
 }
 
-@Preview
+@OptIn(ExperimentalSharedTransitionApi::class)
+@Preview(showBackground = true)
 @Composable
 private fun SearchScreenPreview() {
-//    SearchScreen(onNavigateToSearchDetail = { })
+    MaterialTheme {
+        SharedTransitionLayout {
+            AnimatedVisibility(
+                visible = true,
+                label = "SearchScreenPreviewAnimatedVisibility", // 애니메이션 디버깅에 유용합니다.
+                enter = fadeIn(),
+                exit = fadeOut()
+            ) {
+                // SharedTransitionLayout의 SharedTransitionScope를 SearchScreen의 receiver로 사용하고,
+                // AnimatedVisibility의 AnimatedVisibilityScope를 파라미터로 전달합니다.
+                this@SharedTransitionLayout.SearchScreen(
+                    onNavigateToSearchDetail = { /* Preview에서는 동작 없음 */ },
+                    animationVisibilityScope = this // AnimatedVisibility의 scope
+                    // viewModel은 기본 hiltViewModel()을 사용합니다.
+                    // Preview 환경에서 Hilt ViewModel 생성에 문제가 있다면,
+                    // 별도의 Fake ViewModel을 제공해야 할 수 있습니다.
+                )
+            }
+        }
+    }
 }

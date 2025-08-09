@@ -25,6 +25,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.onFocusChanged
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -38,7 +39,6 @@ fun SharedTransitionScope.SearchScreen(
     onNavigateToSearchDetail: () -> Unit,
     animationVisibilityScope: AnimatedVisibilityScope
 ) {
-    val searchInputText by viewModel.searchTextFieldState.collectAsStateWithLifecycle()
     val searchType by viewModel.searchTypeState.collectAsStateWithLifecycle()
 
     Column(
@@ -50,7 +50,6 @@ fun SharedTransitionScope.SearchScreen(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         SearchContent(
-            searchInputText,
             searchType,
             viewModel,
             onNavigateToSearchDetail,
@@ -63,17 +62,17 @@ fun SharedTransitionScope.SearchScreen(
 @OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 fun SearchContent(
-    searchInputText: String,
     searchType: SearchType?,
     viewModel: SearchViewModel,
     onNavigateToSearchDetail: () -> Unit,
     sharedTransitionScope: SharedTransitionScope,
     animationVisibilityScope: AnimatedVisibilityScope
 ) {
+    val searchHint = stringResource(id = R.string.search_hint)
     Text("Dry Flower")
     RadioButtonGroup(searchType, viewModel)
     SearchTextField(
-        searchInputText,
+        searchHint,
         onNavigateToSearchDetail = {
             onNavigateToSearchDetail()
         },

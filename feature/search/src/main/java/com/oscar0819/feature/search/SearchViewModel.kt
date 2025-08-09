@@ -20,10 +20,6 @@ import javax.inject.Inject
 @HiltViewModel
 class SearchViewModel @Inject constructor(): ViewModel() {
 
-    private val _searchTextFieldState = MutableStateFlow("yuuri")
-    val searchTextFieldState: StateFlow<String>
-        get() = _searchTextFieldState.asStateFlow()
-
     private val _searchTypeState = MutableStateFlow<SearchType?>(null)
     val searchTypeState: StateFlow<SearchType?>
         get() = _searchTypeState.asStateFlow()
@@ -33,20 +29,8 @@ class SearchViewModel @Inject constructor(): ViewModel() {
         SearchType(id = 2, "Album")
     )
 
-//    val suggestions: StateFlow<List<Suggestion>> =
-//        snapshotFlow {  }
-//            .stateIn(
-//                scope = viewModelScope,
-//                started = SharingStarted.WhileSubscribed(5_000),
-//                initialValue = emptyList()
-//            )
-
     init {
         _searchTypeState.value = searchTypeOptions[0]
-    }
-
-    fun updateSearchTextField(inputText: String) {
-        _searchTextFieldState.value = inputText
     }
 
     fun updateSearchType(searchType: SearchType) {

@@ -4,7 +4,6 @@ import androidx.compose.animation.AnimatedVisibilityScope
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
@@ -14,8 +13,12 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -24,7 +27,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 @Composable
 fun SharedTransitionScope.SearchDetailScreen(
     modifier: Modifier = Modifier,
-    viewModel: SearchViewModel = hiltViewModel(),
+    viewModel: SearchDetailViewModel = hiltViewModel(),
     onNavigateToNextScreen: (String, SearchType?) -> Unit,
     animationVisibilityScope: AnimatedVisibilityScope
 ) {
@@ -53,6 +56,7 @@ fun SearchDetailContent(
     animationVisibilityScope: AnimatedVisibilityScope
 ) {
     with(sharedTransitionScope) {
+        val focusRequester = remember { FocusRequester() }
         OutlinedTextField(
             value = searchInputText,
             onValueChange = { },
@@ -61,8 +65,14 @@ fun SearchDetailContent(
                 .sharedElement(
                     rememberSharedContentState(key = "search"),
                     animatedVisibilityScope = animationVisibilityScope
-                ),
+                )
+                .focusRequester(focusRequester),
         )
+
+        // 컴포저블이 처음 나타날 때 포커스 요청
+        LaunchedEffect(Unit) {
+            focusRequester.requestFocus()
+        }
     }
 }
 

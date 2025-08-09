@@ -1,20 +1,10 @@
 package com.oscar0819.feature.search
 
-import androidx.compose.runtime.snapshotFlow
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import com.oscar0819.core.android.AppCoroutineDispatchers
-import com.oscar0819.core.android.logger
-import com.oscar0819.core.data.repo.AlbumsRepository
-import com.oscar0819.core.model.AlbumInfo
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.stateIn
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel

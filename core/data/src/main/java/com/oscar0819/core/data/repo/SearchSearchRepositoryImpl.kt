@@ -8,13 +8,12 @@ import com.oscar0819.core.network.model.asExternalModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
-import kotlinx.coroutines.flow.onCompletion
 import javax.inject.Inject
 
-internal class AlbumsRepositoryImpl @Inject constructor(
+internal class SearchSearchRepositoryImpl @Inject constructor(
     private val dispatchers: AppCoroutineDispatchers,
     private val network: ItunesNetworkDataSource
-): AlbumsRepository {
+): SearchRepository {
     override fun searchAlbum(
         term: String
     ): Flow<List<AlbumInfo>> =

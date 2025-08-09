@@ -1,7 +1,7 @@
 package com.oscar0819.core.data.di
 
-import com.oscar0819.core.data.repo.AlbumsRepository
-import com.oscar0819.core.data.repo.AlbumsRepositoryImpl
+import com.oscar0819.core.data.repo.SearchRepository
+import com.oscar0819.core.data.repo.SearchSearchRepositoryImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -12,7 +12,7 @@ import dagger.hilt.components.SingletonComponent
 abstract class DataModule {
 
     @Binds
-    internal abstract fun bindsAlbumsRepository(
-        albumsRepository: AlbumsRepositoryImpl
-    ): AlbumsRepository
+    internal abstract fun bindsSearchRepository(
+        searchRepository: SearchSearchRepositoryImpl
+    ): SearchRepository
 }

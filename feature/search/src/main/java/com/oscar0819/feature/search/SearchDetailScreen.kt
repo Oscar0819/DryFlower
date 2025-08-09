@@ -16,6 +16,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
@@ -38,8 +39,10 @@ fun SharedTransitionScope.SearchDetailScreen(
             .fillMaxSize()
             .windowInsetsPadding(WindowInsets.statusBars)
             .background(MaterialTheme.colorScheme.background),
+        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         SearchDetailContent(
+            viewModel,
             searchInputText,
             sharedTransitionScope = this@SearchDetailScreen,
             animationVisibilityScope = animationVisibilityScope
@@ -51,6 +54,7 @@ fun SharedTransitionScope.SearchDetailScreen(
 @OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 fun SearchDetailContent(
+    viewModel: SearchDetailViewModel,
     searchInputText: String,
     sharedTransitionScope: SharedTransitionScope,
     animationVisibilityScope: AnimatedVisibilityScope
@@ -59,7 +63,9 @@ fun SearchDetailContent(
         val focusRequester = remember { FocusRequester() }
         OutlinedTextField(
             value = searchInputText,
-            onValueChange = { },
+            onValueChange = { value ->
+                viewModel.updateSearchTextFieldState(value)
+            },
             label = { Text("search") },
             modifier = Modifier
                 .sharedElement(
@@ -69,6 +75,7 @@ fun SearchDetailContent(
                 .focusRequester(focusRequester),
         )
 
+        // TODO 추가 후 애니메이션 버벅임 생김 확인 필요
         // 컴포저블이 처음 나타날 때 포커스 요청
         LaunchedEffect(Unit) {
             focusRequester.requestFocus()

@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.oscar0819.core.android.AppCoroutineDispatchers
 import com.oscar0819.core.android.logger
+import com.oscar0819.core.data.repo.SearchRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -14,6 +15,7 @@ import javax.inject.Inject
 @HiltViewModel
 class SearchDetailViewModel @Inject constructor(
     private val dispatchers: AppCoroutineDispatchers,
+    private val searchRepository: SearchRepository,
 ) : ViewModel() {
 
 //    val uiState: StateFlow<SearchDetailUiState> = StateFlow(SearchDetailUiState.Loading)

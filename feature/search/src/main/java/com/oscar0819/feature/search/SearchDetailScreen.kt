@@ -9,6 +9,8 @@ import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.layout.windowInsetsPadding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
@@ -23,6 +25,7 @@ import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.oscar0819.core.model.AlbumInfo
 
 @OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
@@ -32,6 +35,7 @@ fun SharedTransitionScope.SearchDetailScreen(
     onNavigateToNextScreen: (String, SearchType?) -> Unit,
     animationVisibilityScope: AnimatedVisibilityScope
 ) {
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val searchInputText by viewModel.searchTextFieldState.collectAsStateWithLifecycle()
 
     Column(
@@ -43,6 +47,7 @@ fun SharedTransitionScope.SearchDetailScreen(
     ) {
         SearchDetailContent(
             viewModel,
+            uiState,
             searchInputText,
             sharedTransitionScope = this@SearchDetailScreen,
             animationVisibilityScope = animationVisibilityScope
@@ -55,6 +60,7 @@ fun SharedTransitionScope.SearchDetailScreen(
 @Composable
 fun SearchDetailContent(
     viewModel: SearchDetailViewModel,
+    uiState: SearchDetailUiState,
     searchInputText: String,
     sharedTransitionScope: SharedTransitionScope,
     animationVisibilityScope: AnimatedVisibilityScope
@@ -81,7 +87,36 @@ fun SearchDetailContent(
             focusRequester.requestFocus()
         }
     }
+
+    SearchDetailList(uiState)
 }
+
+@Composable
+fun SearchDetailList(
+    uiState: SearchDetailUiState,
+) {
+
+    if (uiState is SearchDetailUiState.Success) {
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(MaterialTheme.colorScheme.background),
+            horizontalAlignment = Alignment.CenterHorizontally,
+        ) {
+            items(uiState.albumInfoList) { albumInfo ->
+                AlbumItem(albumInfo = albumInfo)
+            }
+        }
+    }
+}
+
+@Composable
+fun AlbumItem(albumInfo: AlbumInfo) {
+    albumInfo.collectionName?.let {
+        Text(text = it)
+    }
+}
+
 
 @Preview
 @Composable

@@ -26,10 +26,12 @@ class AlbumViewModel @Inject constructor(
 
     val uiState: StateFlow<AlbumUiState> = term.filterNotNull().flatMapLatest { term ->
         flow {
+            // TODO 네트워크 통신만 try catch
             try {
                 val albums = searchRepository.searchAlbum(term).first()
                 emit(AlbumUiState.Success(albums))
             } catch (e: Exception) {
+                e.printStackTrace()
                 emit(AlbumUiState.Error)
             }
         }

@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import javax.inject.Inject
 
-internal class SearchSearchRepositoryImpl @Inject constructor(
+internal class SearchRepositoryImpl @Inject constructor(
     private val dispatchers: AppCoroutineDispatchers,
     private val network: ItunesNetworkDataSource
 ): SearchRepository {

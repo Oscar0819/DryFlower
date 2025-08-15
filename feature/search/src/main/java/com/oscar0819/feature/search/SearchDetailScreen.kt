@@ -34,6 +34,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.oscar0819.core.android.AppCoroutineDispatchers
 import com.oscar0819.core.android.FakeAppCoroutineDispatchers
 import com.oscar0819.core.data.repo.FakeSearchRepository
+import com.oscar0819.core.data.repo.MockSearchRepository
 import com.oscar0819.core.model.AlbumInfo
 
 @OptIn(ExperimentalSharedTransitionApi::class)
@@ -59,7 +60,7 @@ fun SharedTransitionScope.SearchDetailScreen(
 @OptIn(ExperimentalSharedTransitionApi::class)
 @VisibleForTesting
 @Composable
-internal fun SearchDetailScreen(
+internal fun SharedTransitionScope.SearchDetailScreen(
     uiState: SearchDetailUiState,
     searchInputText: String,
     updateSearchTextFieldState: (String) -> Unit,
@@ -145,7 +146,7 @@ fun SearchDetailPreview() {
                     // Fake Repository 방식은 Pokedex-compose 프로젝트 참고했음.
                     viewModel = SearchDetailViewModel(
                         FakeAppCoroutineDispatchers,
-                        FakeSearchRepository(),
+                        MockSearchRepository(),
                     ),
                     onNavigateToNextScreen = { str, searchType ->
                     /* Preview에서는 동작 없음 */

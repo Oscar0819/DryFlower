@@ -1,6 +1,4 @@
-package com.oscar0819.core.network.model
-
-import com.oscar0819.core.model.ArtistInfo
+package com.oscar0819.core.model
 
 data class NetworkArtistResponse(
     val resultCount: Int,

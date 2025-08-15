@@ -3,8 +3,8 @@ package com.oscar0819.core.network.retrofit
 import androidx.core.os.trace
 import com.oscar0819.core.network.BuildConfig
 import com.oscar0819.core.network.ItunesNetworkDataSource
-import com.oscar0819.core.network.model.NetworkAlbumResponse
-import com.oscar0819.core.network.model.NetworkArtistResponse
+import com.oscar0819.core.model.NetworkAlbumResponse
+import com.oscar0819.core.model.NetworkArtistResponse
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
 import okhttp3.Call

@@ -2,8 +2,8 @@ package com.oscar0819.core.data.repo
 
 import com.oscar0819.core.model.AlbumInfo
 import com.oscar0819.core.model.ArtistInfo
-import com.oscar0819.core.network.model.NetworkAlbumResponse
-import com.oscar0819.core.network.model.asExternalModel
+import com.oscar0819.core.model.NetworkAlbumResponse
+import com.oscar0819.core.model.asExternalModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf

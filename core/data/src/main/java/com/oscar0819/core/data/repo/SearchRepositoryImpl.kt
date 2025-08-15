@@ -5,7 +5,7 @@ import com.oscar0819.core.android.logger
 import com.oscar0819.core.model.AlbumInfo
 import com.oscar0819.core.model.ArtistInfo
 import com.oscar0819.core.network.ItunesNetworkDataSource
-import com.oscar0819.core.network.model.asExternalModel
+import com.oscar0819.core.model.asExternalModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn

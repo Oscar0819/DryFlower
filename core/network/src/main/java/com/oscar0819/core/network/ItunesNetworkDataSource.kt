@@ -1,7 +1,7 @@
 package com.oscar0819.core.network
 
-import com.oscar0819.core.network.model.NetworkAlbumResponse
-import com.oscar0819.core.network.model.NetworkArtistResponse
+import com.oscar0819.core.model.NetworkAlbumResponse
+import com.oscar0819.core.model.NetworkArtistResponse
 
 interface ItunesNetworkDataSource {
     suspend fun searchAlbum(

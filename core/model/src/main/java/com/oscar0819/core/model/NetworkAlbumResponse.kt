@@ -1,6 +1,5 @@
-package com.oscar0819.core.network.model
+package com.oscar0819.core.model
 
-import com.oscar0819.core.model.AlbumInfo
 import kotlinx.serialization.Serializable
 
 @Serializable

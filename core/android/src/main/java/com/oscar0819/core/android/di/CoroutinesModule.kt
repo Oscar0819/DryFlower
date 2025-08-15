@@ -1,6 +1,7 @@
 package com.oscar0819.core.android.di
 
 import com.oscar0819.core.android.AppCoroutineDispatchers
+import com.oscar0819.core.android.CoroutineDispatchers
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -15,7 +16,7 @@ import javax.inject.Singleton
 internal object CoroutinesModule {
     @Singleton
     @Provides
-    fun provideDispatchers(): AppCoroutineDispatchers = AppCoroutineDispatchers(
+    fun provideDispatchers(): CoroutineDispatchers = AppCoroutineDispatchers(
         io = Dispatchers.IO,
         computation = Dispatchers.Default,
         main = Dispatchers.Main

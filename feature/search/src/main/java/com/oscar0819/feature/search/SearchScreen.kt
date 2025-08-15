@@ -135,6 +135,7 @@ fun SearchTextField(
 private fun SearchScreenPreview() {
     MaterialTheme {
         SharedTransitionLayout {
+
             AnimatedVisibility(
                 visible = true,
                 label = "SearchScreenPreviewAnimatedVisibility", // 애니메이션 디버깅에 유용합니다.

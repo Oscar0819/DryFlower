@@ -3,6 +3,7 @@ package com.oscar0819.feature.search
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.oscar0819.core.android.AppCoroutineDispatchers
+import com.oscar0819.core.android.CoroutineDispatchers
 import com.oscar0819.core.android.logger
 import com.oscar0819.core.data.repo.SearchRepository
 import com.oscar0819.core.model.AlbumInfo
@@ -22,7 +23,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SearchDetailViewModel @Inject constructor(
-    private val dispatchers: AppCoroutineDispatchers,
+    private val dispatchers: CoroutineDispatchers,
     private val searchRepository: SearchRepository,
 ) : ViewModel() {
 

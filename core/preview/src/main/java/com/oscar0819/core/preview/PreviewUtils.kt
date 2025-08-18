@@ -15,7 +15,7 @@ object PreviewUtils {
 
     private val mockAlbums: List<AlbumInfo> by lazy {
         try {
-            val networkResponse =  json.decodeFromString<NetworkAlbumResponse>(com.oscar0819.core.data.repo.mockAlbumJsonResponse)
+            val networkResponse =  json.decodeFromString<NetworkAlbumResponse>(mockAlbumJsonResponse)
 
             val result: List<AlbumInfo> = networkResponse.results.map {
                 it.asExternalModel()

@@ -1,6 +1,7 @@
 package com.oscar0819.core.data.repo
 
 import com.oscar0819.core.android.AppCoroutineDispatchers
+import com.oscar0819.core.android.CoroutineDispatchers
 import com.oscar0819.core.android.logger
 import com.oscar0819.core.model.AlbumInfo
 import com.oscar0819.core.model.ArtistInfo
@@ -12,7 +13,7 @@ import kotlinx.coroutines.flow.flowOn
 import javax.inject.Inject
 
 internal class SearchRepositoryImpl @Inject constructor(
-    private val dispatchers: AppCoroutineDispatchers,
+    private val dispatchers: CoroutineDispatchers,
     private val network: ItunesNetworkDataSource
 ): SearchRepository {
     override fun searchAlbum(

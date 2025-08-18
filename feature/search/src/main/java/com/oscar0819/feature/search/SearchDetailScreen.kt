@@ -144,7 +144,7 @@ fun SearchDetailPreview() {
                 // SharedTransitionLayout의 SharedTransitionScope를 SearchScreen의 receiver로 사용하고,
                 // AnimatedVisibility의 AnimatedVisibilityScope를 파라미터로 전달합니다.
                 SearchDetailScreen(
-                    // Fake Repository 방식은 Pokedex-compose 프로젝트 참고했음.
+                    // Fake Repository 방식은 Pokedex-compose 프로젝트 참고
                     uiState = SearchDetailUiState.Success(PreviewUtils.mockAlbumList()),
                     searchInputText = "",
                     updateSearchTextFieldState = { str ->

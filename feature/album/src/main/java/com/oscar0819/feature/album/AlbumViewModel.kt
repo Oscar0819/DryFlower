@@ -4,6 +4,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.oscar0819.core.android.AppCoroutineDispatchers
+import com.oscar0819.core.android.CoroutineDispatchers
 import com.oscar0819.core.data.repo.SearchRepository
 import com.oscar0819.core.model.AlbumInfo
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -18,7 +19,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AlbumViewModel @Inject constructor(
-    private val dispatchers: AppCoroutineDispatchers,
+    private val dispatchers: CoroutineDispatchers,
     private val searchRepository: SearchRepository,
     savedStateHandle: SavedStateHandle
 ): ViewModel() {

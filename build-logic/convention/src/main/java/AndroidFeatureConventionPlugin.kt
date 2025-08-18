@@ -42,6 +42,7 @@ class AndroidFeatureConventionPlugin : Plugin<Project> {
                 add("implementation", project(":designsystem"))
                 add("implementation", project(":core:android"))
                 add("implementation", project(":core:data"))
+                add("compileOnly", project(":core:preview"))
                 implementation(libs.findLibrary("androidx.lifecycle.runtimeCompose"))
 
                 implementation(libs.findLibrary("kotlinx.serialization.json"))

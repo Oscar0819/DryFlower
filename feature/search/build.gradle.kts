@@ -10,6 +10,7 @@ dependencies {
     implementation(projects.core.preview)
 
     implementation(libs.androidx.activity.compose)
+    implementation(libs.coil.kt.compose)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

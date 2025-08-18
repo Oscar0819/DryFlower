@@ -1,5 +1,6 @@
 package com.oscar0819.feature.search
 
+import android.widget.ImageView
 import androidx.annotation.VisibleForTesting
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.AnimatedVisibilityScope
@@ -10,27 +11,49 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBars
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Divider
+import androidx.compose.material3.DividerDefaults
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import coil.compose.AsyncImage
+import coil.request.ImageRequest
+import coil.size.Size
 import com.oscar0819.core.android.AppCoroutineDispatchers
 import com.oscar0819.core.android.FakeAppCoroutineDispatchers
 import com.oscar0819.core.data.repo.FakeSearchRepository
@@ -72,24 +95,34 @@ internal fun SharedTransitionScope.SearchDetailScreen(
         modifier = Modifier
             .fillMaxSize()
             .windowInsetsPadding(WindowInsets.statusBars)
-            .background(MaterialTheme.colorScheme.background),
+            .background(Color.LightGray), // TODO 다크모드 수정
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
 
         with(sharedTransitionScope) {
             val focusRequester = remember { FocusRequester() }
-            OutlinedTextField(
+            TextField(
                 value = searchInputText,
                 onValueChange = { value ->
                     updateSearchTextFieldState(value)
                 },
-                label = { Text("search") },
+                placeholder = { Text("Search") },
                 modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(8.dp, 8.dp, 8.dp, 0.dp)
+                    .clip(RoundedCornerShape(12.dp))
+                    .background(MaterialTheme.colorScheme.background)
                     .sharedElement(
                         rememberSharedContentState(key = "search"),
                         animatedVisibilityScope = animationVisibilityScope
                     )
                     .focusRequester(focusRequester),
+                colors = TextFieldDefaults.colors( //
+                    focusedIndicatorColor = Color.Transparent,
+                    unfocusedIndicatorColor = Color.Transparent,
+                    disabledIndicatorColor = Color.Transparent,
+                    errorIndicatorColor = Color.Transparent
+                )
             )
 
             // TODO 추가 후 애니메이션 버벅임 생김 확인 필요
@@ -102,8 +135,11 @@ internal fun SharedTransitionScope.SearchDetailScreen(
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
+                .padding(8.dp)
+                .clip(RoundedCornerShape(12.dp))
                 .background(MaterialTheme.colorScheme.background),
             horizontalAlignment = Alignment.CenterHorizontally,
+            contentPadding = PaddingValues(8.dp)
         ) {
             searchDetailBody(uiState)
         }
@@ -115,8 +151,11 @@ private fun LazyListScope.searchDetailBody(
     uiState: SearchDetailUiState,
 ) {
     if (uiState is SearchDetailUiState.Success) {
-        items(uiState.albumInfoList) { albumInfo ->
+        itemsIndexed(uiState.albumInfoList) { index, albumInfo ->
             AlbumItem(albumInfo = albumInfo)
+            if (index < uiState.albumInfoList.lastIndex) {
+                HorizontalDivider(Modifier, DividerDefaults.Thickness, DividerDefaults.color)
+            }
         }
     }
 }
@@ -124,7 +163,40 @@ private fun LazyListScope.searchDetailBody(
 @Composable
 fun AlbumItem(albumInfo: AlbumInfo) {
     albumInfo.collectionName?.let {
-        Text(text = it)
+        Row(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(4.dp),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            AsyncImage(
+                model = ImageRequest.Builder(LocalContext.current)
+                    .data(albumInfo.artworkUrl100)
+                    .crossfade(true)
+                    .placeholder(null)
+                    .build(),
+                contentDescription = "앨범 이미지",
+                modifier = Modifier.size(48.dp)
+                    .clip(RoundedCornerShape(6.dp)),
+            )
+
+            Spacer(Modifier.width(8.dp))
+
+            Column {
+                Text(
+                    text = it,
+                    color = MaterialTheme.colorScheme.onSurface,
+                    fontSize = 16.sp,
+                    maxLines = 1,
+                )
+                Text(
+                    text = "Artist : ${albumInfo.artistName}",
+                    color = Color.Gray,
+                    fontSize = 14.sp,
+                    maxLines = 1,
+                )
+            }
+        }
     }
 }
 

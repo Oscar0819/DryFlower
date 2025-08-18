@@ -10,6 +10,7 @@ import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -56,6 +57,7 @@ import coil.request.ImageRequest
 import coil.size.Size
 import com.oscar0819.core.android.AppCoroutineDispatchers
 import com.oscar0819.core.android.FakeAppCoroutineDispatchers
+import com.oscar0819.core.android.logger
 import com.oscar0819.core.data.repo.FakeSearchRepository
 import com.oscar0819.core.data.repo.MockSearchRepository
 import com.oscar0819.core.model.AlbumInfo
@@ -76,6 +78,7 @@ fun SharedTransitionScope.SearchDetailScreen(
         uiState,
         searchInputText,
         viewModel::updateSearchTextFieldState,
+        viewModel::lookupAlbumTrack,
         sharedTransitionScope = this@SearchDetailScreen,
         animationVisibilityScope = animationVisibilityScope
     )
@@ -88,6 +91,7 @@ internal fun SharedTransitionScope.SearchDetailScreen(
     uiState: SearchDetailUiState,
     searchInputText: String,
     updateSearchTextFieldState: (String) -> Unit,
+    lookupAlbumTrack: (Int) -> Unit,
     sharedTransitionScope: SharedTransitionScope,
     animationVisibilityScope: AnimatedVisibilityScope
 ) {
@@ -141,7 +145,7 @@ internal fun SharedTransitionScope.SearchDetailScreen(
             horizontalAlignment = Alignment.CenterHorizontally,
             contentPadding = PaddingValues(8.dp)
         ) {
-            searchDetailBody(uiState)
+            searchDetailBody(uiState, lookupAlbumTrack)
         }
     }
 }
@@ -149,10 +153,11 @@ internal fun SharedTransitionScope.SearchDetailScreen(
 // NIA 참고. 컴포저블이 아닌 형태로 Preview를 보여주기 위함?
 private fun LazyListScope.searchDetailBody(
     uiState: SearchDetailUiState,
+    lookupAlbumTrack: (Int) -> Unit,
 ) {
     if (uiState is SearchDetailUiState.Success) {
         itemsIndexed(uiState.albumInfoList) { index, albumInfo ->
-            AlbumItem(albumInfo = albumInfo)
+            AlbumItem(albumInfo = albumInfo, lookupAlbumTrack)
             if (index < uiState.albumInfoList.lastIndex) {
                 HorizontalDivider(Modifier, DividerDefaults.Thickness, DividerDefaults.color)
             }
@@ -161,12 +166,19 @@ private fun LazyListScope.searchDetailBody(
 }
 
 @Composable
-fun AlbumItem(albumInfo: AlbumInfo) {
+fun AlbumItem(
+    albumInfo: AlbumInfo,
+    lookupAlbumTrack: (Int) -> Unit,
+) {
     albumInfo.collectionName?.let {
         Row(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(4.dp),
+                .padding(4.dp)
+                .clickable {
+                    logger("onClick")
+                    lookupAlbumTrack(albumInfo.collectionId ?: -1)
+                },
             verticalAlignment = Alignment.CenterVertically,
         ) {
             AsyncImage(
@@ -220,6 +232,9 @@ fun SearchDetailPreview() {
                     uiState = SearchDetailUiState.Success(PreviewUtils.mockAlbumList()),
                     searchInputText = "",
                     updateSearchTextFieldState = { str ->
+                    /* Preview에서는 동작 없음 */
+                    },
+                    lookupAlbumTrack = { collectionId ->
                     /* Preview에서는 동작 없음 */
                     },
                     sharedTransitionScope = this@SharedTransitionLayout,

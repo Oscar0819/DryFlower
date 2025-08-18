@@ -1,5 +1,7 @@
 package com.oscar0819.core.data.di
 
+import com.oscar0819.core.data.repo.LookupRepository
+import com.oscar0819.core.data.repo.LookupRepositoryImpl
 import com.oscar0819.core.data.repo.SearchRepository
 import com.oscar0819.core.data.repo.SearchRepositoryImpl
 import dagger.Binds
@@ -15,4 +17,10 @@ abstract class DataModule {
     internal abstract fun bindsSearchRepository(
         searchRepository: SearchRepositoryImpl
     ): SearchRepository
+
+    @Binds
+    internal abstract fun bindsLookupRepository(
+        lookupRepository: LookupRepositoryImpl
+    ): LookupRepository
+
 }

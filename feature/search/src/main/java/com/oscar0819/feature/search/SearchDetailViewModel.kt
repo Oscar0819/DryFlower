@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.oscar0819.core.android.AppCoroutineDispatchers
 import com.oscar0819.core.android.CoroutineDispatchers
 import com.oscar0819.core.android.logger
+import com.oscar0819.core.data.repo.LookupRepository
 import com.oscar0819.core.data.repo.SearchRepository
 import com.oscar0819.core.model.AlbumInfo
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -25,6 +26,7 @@ import javax.inject.Inject
 class SearchDetailViewModel @Inject constructor(
     private val dispatchers: CoroutineDispatchers,
     private val searchRepository: SearchRepository,
+    private val lookupRepository: LookupRepository,
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow<SearchDetailUiState>(SearchDetailUiState.Loading)
@@ -60,6 +62,18 @@ class SearchDetailViewModel @Inject constructor(
         }
     }
 
+    fun lookupAlbumTrack(collectionId: Int) {
+        viewModelScope.launch(dispatchers.io) {
+            val albumTracks = try {
+                lookupRepository.lookupAlbumTracks(collectionId).first()
+            } catch (e: Exception) {
+                e.printStackTrace()
+                emptyList()
+            }
+
+            logger(albumTracks)
+        }
+    }
 }
 
 sealed class SearchDetailUiState {

@@ -77,6 +77,7 @@ fun SharedTransitionScope.SearchDetailScreen(
     SearchDetailScreen(
         uiState,
         searchInputText,
+        onNavigateToNextScreen,
         viewModel::updateSearchTextFieldState,
         viewModel::lookupAlbumTrack,
         sharedTransitionScope = this@SearchDetailScreen,
@@ -90,6 +91,7 @@ fun SharedTransitionScope.SearchDetailScreen(
 internal fun SharedTransitionScope.SearchDetailScreen(
     uiState: SearchDetailUiState,
     searchInputText: String,
+    onNavigateToNextScreen: (String, SearchType?) -> Unit,
     updateSearchTextFieldState: (String) -> Unit,
     lookupAlbumTrack: (Int) -> Unit,
     sharedTransitionScope: SharedTransitionScope,
@@ -145,7 +147,7 @@ internal fun SharedTransitionScope.SearchDetailScreen(
             horizontalAlignment = Alignment.CenterHorizontally,
             contentPadding = PaddingValues(8.dp)
         ) {
-            searchDetailBody(uiState, lookupAlbumTrack)
+            searchDetailBody(uiState, onNavigateToNextScreen, lookupAlbumTrack)
         }
     }
 }
@@ -153,11 +155,12 @@ internal fun SharedTransitionScope.SearchDetailScreen(
 // NIA 참고. 컴포저블이 아닌 형태로 Preview를 보여주기 위함?
 private fun LazyListScope.searchDetailBody(
     uiState: SearchDetailUiState,
+    onNavigateToNextScreen: (String, SearchType?) -> Unit,
     lookupAlbumTrack: (Int) -> Unit,
 ) {
     if (uiState is SearchDetailUiState.Success) {
         itemsIndexed(uiState.albumInfoList) { index, albumInfo ->
-            AlbumItem(albumInfo = albumInfo, lookupAlbumTrack)
+            AlbumItem(albumInfo = albumInfo, onNavigateToNextScreen, lookupAlbumTrack)
             if (index < uiState.albumInfoList.lastIndex) {
                 HorizontalDivider(Modifier, DividerDefaults.Thickness, DividerDefaults.color)
             }
@@ -168,7 +171,9 @@ private fun LazyListScope.searchDetailBody(
 @Composable
 fun AlbumItem(
     albumInfo: AlbumInfo,
+    onNavigateToNextScreen: (String, SearchType?) -> Unit,
     lookupAlbumTrack: (Int) -> Unit,
+
 ) {
     albumInfo.collectionName?.let {
         Row(
@@ -177,7 +182,13 @@ fun AlbumItem(
                 .padding(4.dp)
                 .clickable {
                     logger("onClick")
-                    lookupAlbumTrack(albumInfo.collectionId ?: -1)
+                    onNavigateToNextScreen(
+                        albumInfo.collectionId.toString(),
+                        SearchType(
+                            id = 3,
+                            name = "AlbumTrack"
+                        )
+                    )
                 },
             verticalAlignment = Alignment.CenterVertically,
         ) {
@@ -231,6 +242,9 @@ fun SearchDetailPreview() {
                     // Fake Repository 방식은 Pokedex-compose 프로젝트 참고
                     uiState = SearchDetailUiState.Success(PreviewUtils.mockAlbumList()),
                     searchInputText = "",
+                    onNavigateToNextScreen = { term, searchType ->
+                    /* Preview에서는 동작 없음 */
+                    },
                     updateSearchTextFieldState = { str ->
                     /* Preview에서는 동작 없음 */
                     },

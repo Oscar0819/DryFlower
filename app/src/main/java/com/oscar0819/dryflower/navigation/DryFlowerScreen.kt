@@ -1,6 +1,5 @@
 package com.oscar0819.dryflower.navigation
 
-import com.oscar0819.core.model.AlbumInfo
 import kotlinx.serialization.Serializable
 
 sealed interface DryFlowerScreen {
@@ -15,4 +14,8 @@ sealed interface DryFlowerScreen {
 
     @Serializable
     data class Artist(val term: String): DryFlowerScreen
+
+    @Serializable
+    data class AlbumDetail(val collectionId: Int): DryFlowerScreen
+
 }

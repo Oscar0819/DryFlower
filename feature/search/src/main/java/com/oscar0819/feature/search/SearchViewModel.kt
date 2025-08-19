@@ -16,7 +16,8 @@ class SearchViewModel @Inject constructor(): ViewModel() {
 
     val searchTypeOptions = listOf(
         SearchType(id = 1, "Artist"),
-        SearchType(id = 2, "Album")
+        SearchType(id = 2, "Album"),
+        SearchType(id = 3, "AlbumTrack"),
     )
 
     init {

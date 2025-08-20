@@ -1,6 +1,5 @@
 package com.oscar0819.feature.search
 
-import android.widget.ImageView
 import androidx.annotation.VisibleForTesting
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.AnimatedVisibilityScope
@@ -25,14 +24,11 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Divider
 import androidx.compose.material3.DividerDefaults
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
@@ -54,12 +50,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
-import coil.size.Size
-import com.oscar0819.core.android.AppCoroutineDispatchers
-import com.oscar0819.core.android.FakeAppCoroutineDispatchers
 import com.oscar0819.core.android.logger
-import com.oscar0819.core.data.repo.FakeSearchRepository
-import com.oscar0819.core.data.repo.MockSearchRepository
 import com.oscar0819.core.model.AlbumInfo
 import com.oscar0819.core.preview.PreviewUtils
 
@@ -79,7 +70,6 @@ fun SharedTransitionScope.SearchDetailScreen(
         searchInputText,
         onNavigateToNextScreen,
         viewModel::updateSearchTextFieldState,
-        viewModel::lookupAlbumTrack,
         sharedTransitionScope = this@SearchDetailScreen,
         animationVisibilityScope = animationVisibilityScope
     )
@@ -93,7 +83,6 @@ internal fun SharedTransitionScope.SearchDetailScreen(
     searchInputText: String,
     onNavigateToNextScreen: (String, SearchType?) -> Unit,
     updateSearchTextFieldState: (String) -> Unit,
-    lookupAlbumTrack: (Int) -> Unit,
     sharedTransitionScope: SharedTransitionScope,
     animationVisibilityScope: AnimatedVisibilityScope
 ) {
@@ -147,7 +136,7 @@ internal fun SharedTransitionScope.SearchDetailScreen(
             horizontalAlignment = Alignment.CenterHorizontally,
             contentPadding = PaddingValues(8.dp)
         ) {
-            searchDetailBody(uiState, onNavigateToNextScreen, lookupAlbumTrack)
+            searchDetailBody(uiState, onNavigateToNextScreen)
         }
     }
 }
@@ -156,11 +145,10 @@ internal fun SharedTransitionScope.SearchDetailScreen(
 private fun LazyListScope.searchDetailBody(
     uiState: SearchDetailUiState,
     onNavigateToNextScreen: (String, SearchType?) -> Unit,
-    lookupAlbumTrack: (Int) -> Unit,
 ) {
     if (uiState is SearchDetailUiState.Success) {
         itemsIndexed(uiState.albumInfoList) { index, albumInfo ->
-            AlbumItem(albumInfo = albumInfo, onNavigateToNextScreen, lookupAlbumTrack)
+            AlbumItem(albumInfo = albumInfo, onNavigateToNextScreen)
             if (index < uiState.albumInfoList.lastIndex) {
                 HorizontalDivider(Modifier, DividerDefaults.Thickness, DividerDefaults.color)
             }
@@ -172,8 +160,6 @@ private fun LazyListScope.searchDetailBody(
 fun AlbumItem(
     albumInfo: AlbumInfo,
     onNavigateToNextScreen: (String, SearchType?) -> Unit,
-    lookupAlbumTrack: (Int) -> Unit,
-
 ) {
     albumInfo.collectionName?.let {
         Row(
@@ -223,7 +209,6 @@ fun AlbumItem(
     }
 }
 
-
 @OptIn(ExperimentalSharedTransitionApi::class)
 @Preview
 @Composable
@@ -242,13 +227,10 @@ fun SearchDetailPreview() {
                     // Fake Repository 방식은 Pokedex-compose 프로젝트 참고
                     uiState = SearchDetailUiState.Success(PreviewUtils.mockAlbumList()),
                     searchInputText = "",
-                    onNavigateToNextScreen = { term, searchType ->
+                    onNavigateToNextScreen = { _, _ ->
                     /* Preview에서는 동작 없음 */
                     },
-                    updateSearchTextFieldState = { str ->
-                    /* Preview에서는 동작 없음 */
-                    },
-                    lookupAlbumTrack = { collectionId ->
+                    updateSearchTextFieldState = { _ ->
                     /* Preview에서는 동작 없음 */
                     },
                     sharedTransitionScope = this@SharedTransitionLayout,

@@ -61,19 +61,6 @@ class SearchDetailViewModel @Inject constructor(
             }
         }
     }
-
-    fun lookupAlbumTrack(collectionId: Int) {
-        viewModelScope.launch(dispatchers.io) {
-            val albumTracks = try {
-                lookupRepository.lookupAlbumTracks(collectionId).first()
-            } catch (e: Exception) {
-                e.printStackTrace()
-                emptyList()
-            }
-
-            logger(albumTracks)
-        }
-    }
 }
 
 sealed class SearchDetailUiState {

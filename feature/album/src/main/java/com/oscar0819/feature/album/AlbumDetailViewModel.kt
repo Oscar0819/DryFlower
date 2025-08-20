@@ -46,7 +46,7 @@ class AlbumDetailViewModel @Inject constructor(
 }
 
 sealed interface AlbumTrackUiState {
-    data class Success(val albumInfoList: List<AlbumTrackInfo>) : AlbumTrackUiState
+    data class Success(val albumTrackInfoList: List<AlbumTrackInfo>) : AlbumTrackUiState
     data object Error : AlbumTrackUiState
     data object Loading : AlbumTrackUiState
 }

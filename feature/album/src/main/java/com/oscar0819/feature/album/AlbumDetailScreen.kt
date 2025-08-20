@@ -1,20 +1,27 @@
 package com.oscar0819.feature.album
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.windowInsetsPadding
+import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.DividerDefaults
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
@@ -24,10 +31,8 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
@@ -63,12 +68,13 @@ fun AlbumDetailScreen(
 ) {
     Column(modifier = Modifier
         .fillMaxSize()
+        .windowInsetsPadding(WindowInsets.navigationBars)
         .background(Color.LightGray), // TODO 다크모드 수정
     ) {
-        DryFlowerAppBar("TEST")
+        DryFlowerAppBar("")
         Box(
             modifier = Modifier
-                .fillMaxWidth()
+                .fillMaxSize()
                 .background(MaterialTheme.colorScheme.background),
         ) {
             when (uiState) {
@@ -78,8 +84,8 @@ fun AlbumDetailScreen(
                             .fillMaxSize()
                     ) {
                         // TODO dp 값 효율적으로 배치하는 방법
-                        albumArea(uiState) // TODO Naming
-                        trackArea(uiState) // TODO Naming
+                        albumCard(uiState)
+                        trackList(uiState)
                     }
                 }
                 AlbumTrackUiState.Loading -> {
@@ -100,7 +106,7 @@ fun AlbumDetailScreen(
     }
 }
 
-private fun LazyListScope.albumArea(uiState: AlbumTrackUiState.Success) {
+private fun LazyListScope.albumCard(uiState: AlbumTrackUiState.Success) {
     val albumInfo: AlbumTrackInfo? = uiState.albumTrackInfoList.firstOrNull()
 
     albumInfo?.let {
@@ -114,20 +120,28 @@ private fun LazyListScope.albumArea(uiState: AlbumTrackUiState.Success) {
                     .data(albumInfo.artworkUrl1200)
                     .crossfade(true)
                     .placeholder(null)
-                // TODO 구조 연구
+
                 if (albumInfo.artworkUrl1200.isNullOrEmpty()) {
                     builder.placeholder(com.oscar0819.core.preview.R.drawable.dryflower)
                 }
 
                 val imageRequest = builder.build()
-                AsyncImage(
-                    model = imageRequest,
-                    contentDescription = "앨범 이미지",
+                // TODO 가로모드 시 이미지 여백이 보이는 현상 개선
+                Card(
                     modifier = Modifier
                         .fillMaxSize()
-                        .padding(48.dp, 0.dp, 48.dp, 0.dp)
-                        .clip(RoundedCornerShape(12.dp)),
-                )
+                        .padding(48.dp, 48.dp, 48.dp, 0.dp)
+                    ,
+                    shape = RoundedCornerShape(14.dp),
+                    elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
+                ) {
+                    AsyncImage(
+                        model = imageRequest,
+                        contentDescription = "앨범 이미지",
+                        modifier = Modifier
+                            .fillMaxSize()
+                    )
+                }
                 Spacer(Modifier.height(16.dp))
                 Text(
                     text = albumInfo.collectionName.toString(),
@@ -146,7 +160,7 @@ private fun LazyListScope.albumArea(uiState: AlbumTrackUiState.Success) {
     }
 }
 
-private fun LazyListScope.trackArea(uiState: AlbumTrackUiState.Success) {
+private fun LazyListScope.trackList(uiState: AlbumTrackUiState.Success) {
     itemsIndexed(uiState.albumTrackInfoList) { index, trackInfo ->
         if (index == 0) {
             return@itemsIndexed

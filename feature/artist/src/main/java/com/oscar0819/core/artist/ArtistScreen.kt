@@ -6,6 +6,7 @@ import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
@@ -15,6 +16,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -44,7 +46,6 @@ fun ArtistScreen(
     Column(
         modifier = Modifier.fillMaxSize()
             .background(MaterialTheme.colorScheme.background)
-            .verticalScroll(testState)
     ) {
         DryFlowerAppBar(
             stringResource(R.string.artist)
@@ -56,7 +57,21 @@ fun ArtistScreen(
         ) {
             when (uiState) {
                 is ArtistUiState.Success -> {
-                    Text(uiState.artistInfo.toString())
+                    LazyColumn(
+                        modifier = Modifier
+                            .fillMaxSize()
+                    ) {
+                        item {
+                            Text(
+                                text = uiState.artistAlbumInfos.toString(),
+                                color = Color.Red
+                            )
+                            Text(
+                                text = uiState.artistSongInfos.toString(),
+                                color = Color.Blue
+                            )
+                        }
+                    }
                 }
                 ArtistUiState.Loading -> {
                     DryFlowerCircularProgress()
@@ -81,6 +96,6 @@ fun ArtistScreen(
 fun ArtistScreenPreview() {
     ArtistScreen(
         onShowSnackbar = {_, _ -> },
-        uiState = ArtistUiState.Success(emptyList())
+        uiState = ArtistUiState.Success(emptyList(), emptyList())
     )
 }

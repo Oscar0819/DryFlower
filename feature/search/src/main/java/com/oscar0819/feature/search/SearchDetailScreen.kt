@@ -234,7 +234,7 @@ fun SearchDetailPreview() {
                 // AnimatedVisibility의 AnimatedVisibilityScope를 파라미터로 전달합니다.
                 SearchDetailScreen(
                     // Fake Repository 방식은 Pokedex-compose 프로젝트 참고
-                    uiState = SearchDetailUiState.Success(PreviewUtils.mockAlbumList()),
+                    uiState = SearchDetailUiState.Success(PreviewUtils.mockAlbums()),
                     searchInputText = "",
                     onNavigateToNextScreen = { _, _ ->
                     /* Preview에서는 동작 없음 */

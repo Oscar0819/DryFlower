@@ -21,6 +21,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.oscar0819.core.preview.PreviewUtils
 import com.oscar0819.designsystem.component.DryFlowerAppBar
 import com.oscar0819.designsystem.component.DryFlowerCircularProgress
 
@@ -42,7 +43,6 @@ fun ArtistScreen(
     onShowSnackbar: suspend (String, String?) -> Unit,
     uiState : ArtistUiState
 ) {
-    val testState = rememberScrollState()
     Column(
         modifier = Modifier.fillMaxSize()
             .background(MaterialTheme.colorScheme.background)
@@ -94,8 +94,13 @@ fun ArtistScreen(
 @Preview
 @Composable
 fun ArtistScreenPreview() {
+    val artistAlbumInfos = PreviewUtils.mockArtistAlbums()
+    val artistSongInfos = PreviewUtils.mockArtistSongs()
     ArtistScreen(
         onShowSnackbar = {_, _ -> },
-        uiState = ArtistUiState.Success(emptyList(), emptyList())
+        uiState = ArtistUiState.Success(
+            artistAlbumInfos,
+            artistSongInfos,
+        )
     )
 }

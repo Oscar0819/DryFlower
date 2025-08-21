@@ -191,9 +191,9 @@ private fun LazyListScope.trackList(uiState: AlbumTrackUiState.Success) {
 @Preview
 @Composable
 fun AlbumDetailPreview() {
-    logger(PreviewUtils.mockAlbumTrackList().toString())
+    logger(PreviewUtils.mockAlbumTracks().toString())
     AlbumDetailScreen(
         onShowSnackbar = { _, _ -> },
-        uiState = AlbumTrackUiState.Success(PreviewUtils.mockAlbumTrackList()),
+        uiState = AlbumTrackUiState.Success(PreviewUtils.mockAlbumTracks()),
     )
 }

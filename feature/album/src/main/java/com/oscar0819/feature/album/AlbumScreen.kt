@@ -78,7 +78,7 @@ private fun AlbumContent(
                 DryFlowerCircularProgress()
             }
             AlbumUiState.Error -> {
-                val errorMessage = stringResource(R.string.network_error)
+                val errorMessage = stringResource(com.oscar0819.designsystem.R.string.network_error)
                 Text(modifier = Modifier.align(Alignment.Center),
                     text = errorMessage)
                 LaunchedEffect(Unit) {

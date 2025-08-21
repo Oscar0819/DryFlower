@@ -11,11 +11,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.windowInsetsPadding
-import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.itemsIndexed
@@ -32,6 +29,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
@@ -92,7 +90,7 @@ fun AlbumDetailScreen(
                     DryFlowerCircularProgress()
                 }
                 AlbumTrackUiState.Error -> {
-                    val errorMessage = stringResource(R.string.network_error)
+                    val errorMessage = stringResource(com.oscar0819.designsystem.R.string.network_error)
                     Text(
                         modifier = Modifier.align(Alignment.Center),
                         text = errorMessage
@@ -126,10 +124,10 @@ private fun LazyListScope.albumCard(uiState: AlbumTrackUiState.Success) {
                 }
 
                 val imageRequest = builder.build()
-                // TODO 가로모드 시 이미지 여백이 보이는 현상 개선
+                // TODO 사이즈를 더 좋게 잡을 수 있는 방법 찾기
                 Card(
                     modifier = Modifier
-                        .fillMaxSize()
+                        .fillMaxWidth() // TODO 가로모드 고려
                         .padding(48.dp, 48.dp, 48.dp, 0.dp)
                     ,
                     shape = RoundedCornerShape(14.dp),
@@ -138,8 +136,10 @@ private fun LazyListScope.albumCard(uiState: AlbumTrackUiState.Success) {
                     AsyncImage(
                         model = imageRequest,
                         contentDescription = "앨범 이미지",
+                        contentScale = ContentScale.Fit,
                         modifier = Modifier
-                            .fillMaxSize()
+                            .align(Alignment.CenterHorizontally)
+
                     )
                 }
                 Spacer(Modifier.height(16.dp))

@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="screen_name">Artist</string>
+    <!-- 병합 충돌로 album 모듈의 name을 가져오는 현상 방지를 위해 네이밍 변경 -->
+    <string name="artist">Artist</string>
 </resources>

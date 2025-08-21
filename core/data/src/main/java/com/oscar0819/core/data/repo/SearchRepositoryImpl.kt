@@ -43,7 +43,8 @@ internal class SearchRepositoryImpl @Inject constructor(
             emit(result)
         }.flowOn(dispatchers.io)
 
-    fun changeUrl(albumInfo: AlbumInfo): AlbumInfo {
+    // TODO CHANGE
+    private fun changeUrl(albumInfo: AlbumInfo): AlbumInfo {
         val artworkUrl1200 = albumInfo.artworkUrl100?.replace(RESOLUTION_100, RESOLUTION_1200)
         return albumInfo.copy(artworkUrl1200 = artworkUrl1200)
     }

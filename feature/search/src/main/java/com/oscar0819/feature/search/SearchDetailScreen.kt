@@ -170,11 +170,18 @@ fun AlbumItem(
                 .padding(4.dp)
                 .clickable {
                     logger("onClick")
+//                    onNavigateToNextScreen(
+//                        albumInfo.collectionId.toString(),
+//                        SearchType(
+//                            id = 3,
+//                            name = "AlbumTrack"
+//                        )
+//                    )
                     onNavigateToNextScreen(
-                        albumInfo.collectionId.toString(),
+                        albumInfo.artistId.toString(),
                         SearchType(
-                            id = 3,
-                            name = "AlbumTrack"
+                            id = 1,
+                            name = "Artist"
                         )
                     )
                 },

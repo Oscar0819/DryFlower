@@ -31,7 +31,8 @@ fun NavGraphBuilder.dryflowerNavigation(
             onNavigateToNextScreen = { data, searchType ->
                 when (searchType?.id) {
                     1 -> {
-                        navHostController.navigate(DryFlowerScreen.Artist(data))
+                        val artistId = data.toIntOrNull() ?: -1
+                        navHostController.navigate(DryFlowerScreen.Artist(artistId))
                     }
                     2 -> {
                         navHostController.navigate(DryFlowerScreen.Album(data))
@@ -54,6 +55,6 @@ fun NavGraphBuilder.dryflowerNavigation(
         AlbumScreen(onShowSnackbar)
     }
     composable<DryFlowerScreen.Artist> {
-        ArtistScreen()
+        ArtistScreen(onShowSnackbar)
     }
 }

@@ -24,6 +24,7 @@ class ArtistViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle
 ): ViewModel() {
     val artistId = savedStateHandle.getStateFlow<Int?>("artistId", null)
+
     val uiState: StateFlow<ArtistUiState> =  artistId.filterNotNull().flatMapLatest { artistId ->
 //        flow {
 //            val result = try {

@@ -2,4 +2,6 @@
 <resources>
     <!-- 병합 충돌로 album 모듈의 name을 가져오는 현상 방지를 위해 네이밍 변경 -->
     <string name="artist">Artist</string>
+
+    <string name="top_songs">Top Songs</string>
 </resources>

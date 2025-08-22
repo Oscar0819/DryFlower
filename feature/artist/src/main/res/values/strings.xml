@@ -4,4 +4,5 @@
     <string name="artist">Artist</string>
 
     <string name="top_songs">Top Songs</string>
+    <string name="album">Album</string>
 </resources>

@@ -7,14 +7,22 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyHorizontalGrid
+import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
@@ -43,6 +51,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
+import com.oscar0819.core.model.ArtistAlbumInfo
 import com.oscar0819.core.preview.PreviewUtils
 import com.oscar0819.designsystem.component.DryFlowerAppBar
 import com.oscar0819.designsystem.component.DryFlowerCircularProgress
@@ -68,6 +77,7 @@ fun ArtistScreen(
 ) {
     Column(
         modifier = Modifier
+            .windowInsetsPadding(WindowInsets.navigationBars)
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.background)
     ) {
@@ -81,10 +91,12 @@ fun ArtistScreen(
         ) {
             when (uiState) {
                 is ArtistUiState.Success -> {
+
+                    val topSongsItemPerPage = 4
                     val pageCnt = calculatePageCount(
                         totalItemSize = uiState.artistSongInfos.size,
                         maxPageCount = 4,
-                        itemPerPage = 4,
+                        itemPerPage = topSongsItemPerPage,
                     )
 
                     val topSongsPagerState = rememberPagerState(
@@ -93,6 +105,8 @@ fun ArtistScreen(
                         }
                     )
 
+                    val albumPagerState = rememberPagerState(pageCount = { 4 })
+
                     LazyColumn(
                         modifier = Modifier
                             .padding(start = 8.dp)
@@ -100,8 +114,8 @@ fun ArtistScreen(
                         verticalArrangement = Arrangement.spacedBy(16.dp),
                     ) {
                         artistName(uiState)
-                        topSongs(uiState, topSongsPagerState)
-                        album(uiState)
+                        topSongs(uiState, topSongsPagerState, topSongsItemPerPage)
+                        album(uiState, albumPagerState)
                     }
                 }
                 ArtistUiState.Loading -> {
@@ -135,6 +149,7 @@ private fun LazyListScope.artistName(uiState: ArtistUiState.Success) {
 private fun LazyListScope.topSongs(
     uiState: ArtistUiState.Success,
     topSongsPagerState: PagerState,
+    itemPerPage: Int, // Default : 4
 ) {
     item {
         // TODO 행 갯수로 표현할 수 없는 음악은 화살표로 전체 볼 수 있게 하기
@@ -145,8 +160,8 @@ private fun LazyListScope.topSongs(
             contentPadding = PaddingValues(horizontal = 8.dp)
         ) { page ->
             Column {
-                repeat(4) { i ->
-                    val index = page * 4 + i + 1 // 0번째는 더미 데이터라 1부터 시작
+                repeat(itemPerPage) { i ->
+                    val index = page * itemPerPage + i + 1 // 0번째는 더미 데이터라 1부터 시작
 
                     if (index >= uiState.artistSongInfos.size) return@repeat
 
@@ -186,22 +201,9 @@ private fun LazyListScope.topSongs(
                         Spacer(modifier = Modifier.width(14.dp))
 
                         Column {
-                            Text(
-                                text = "${artistSongsInfos[index].trackName}",
-                                fontSize = 16.sp,
-                                color = MaterialTheme.colorScheme.onSurface,
-                                maxLines = 1,
-                                modifier = Modifier.padding(end = 32.dp)
-                            )
+                            MainText("${artistSongsInfos[index].trackName}")
                             Spacer(Modifier.height(2.dp))
-                            Text(
-                                text = "${artistSongsInfos[index].collectionName}",
-                                fontSize = 12.sp,
-                                color = Color.Gray,
-                                maxLines = 1,
-                                overflow = TextOverflow.Ellipsis,
-                                modifier = Modifier.padding(end = 32.dp)
-                            )
+                            SubText("${artistSongsInfos[index].collectionName}")
                         }
                     }
                     if (i != 3) {
@@ -219,10 +221,76 @@ private fun LazyListScope.topSongs(
 
 private fun LazyListScope.album(
     uiState: ArtistUiState.Success,
+    albumPagerState: PagerState,
 ) {
     item {
         ArtistCategoryText(R.string.album)
+        val artistAlbumInfos = uiState.artistAlbumInfos.toMutableList()
 
+        artistAlbumInfos.removeAt(0)
+
+        // TODO 자동으로 페이지 잡아주는 커스텀 뷰로 변경.
+        LazyRow(
+            contentPadding = PaddingValues(end = 8.dp),
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+        ) {
+            items(artistAlbumInfos) { artistAlbumInfo ->
+                AlbumCard(artistAlbumInfo)
+            }
+        }
+
+//        HorizontalPager(albumPagerState) { page ->
+//            val itemPerPage = 2
+//            val startIndex = page * itemPerPage + 1
+////            val endIndex = (page + 1) * itemPerPage + 1
+//
+//            val chunkedItems = uiState.artistAlbumInfos.chunked(2)
+//            val listSize = uiState.artistAlbumInfos.size
+//
+//            val pageItems = chunkedItems[page]
+//
+//            Row (
+//                horizontalArrangement = Arrangement.spacedBy(8.dp),
+//            ) {
+//                pageItems.forEach { artistAlbumInfo ->
+//                    AlbumCard(artistAlbumInfo)
+//                }
+//            }
+//        }
+    }
+}
+
+@Composable
+private fun AlbumCard(
+    artistAlbumInfo: ArtistAlbumInfo,
+) {
+    val builder = ImageRequest.Builder(LocalContext.current)
+        .data(artistAlbumInfo.artworkUrl1200)
+        .crossfade(true)
+        .placeholder(com.oscar0819.core.preview.R.drawable.dryflower)
+
+    val imageRequest = builder.build()
+
+    val imageSize = 156
+    Column {
+        Card(
+            modifier = Modifier
+                .size(imageSize.dp)
+            ,
+            shape = RoundedCornerShape(6.dp),
+            elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
+        ) {
+            AsyncImage(
+                model = imageRequest,
+                contentDescription = "앨범 이미지",
+                contentScale = ContentScale.Fit,
+                modifier = Modifier
+                    .fillMaxSize()
+            )
+        }
+        MainText(artistAlbumInfo.collectionName ?: "")
+        Spacer(Modifier.height(2.dp))
+        SubText(artistAlbumInfo.releaseDate?.substring(0, 4) ?: "")
     }
 }
 
@@ -252,6 +320,29 @@ private fun calculatePageCount(
         min(pagesNeeded, maxPageCount)
     }
     return pageCnt
+}
+
+@Composable
+private fun MainText(text: String) {
+    Text(
+        text = text,
+        fontSize = 16.sp,
+        color = MaterialTheme.colorScheme.onSurface,
+        maxLines = 1,
+        modifier = Modifier.padding(end = 32.dp)
+    )
+}
+
+@Composable
+private fun SubText(text: String) {
+    Text(
+        text = text,
+        fontSize = 14.sp,
+        color = Color.Gray,
+        maxLines = 1,
+        overflow = TextOverflow.Ellipsis,
+        modifier = Modifier.padding(end = 32.dp)
+    )
 }
 
 @Preview
